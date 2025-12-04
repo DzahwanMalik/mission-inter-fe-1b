@@ -13,6 +13,8 @@ type Props = {
   handleAddFavoriteTVSeries?: (userId: string, videoId: string) => void;
   handleRemoveFavoriteMovie?: (userId: string, videoId: string) => void;
   handleRemoveFavoriteTVSeries?: (userId: string, videoId: string) => void;
+  handleOpenPopUpMovieDetail?: (id: number) => void;
+  handleOpenPopUpTVDetail?: (id: number) => void;
   label: string;
   addLoading: boolean;
   removeLoading: boolean;
@@ -26,6 +28,8 @@ const FavoriteList = ({
   handleAddFavoriteTVSeries,
   handleRemoveFavoriteMovie,
   handleRemoveFavoriteTVSeries,
+  handleOpenPopUpMovieDetail,
+  handleOpenPopUpTVDetail,
   addLoading,
   removeLoading,
 }: Props) => {
@@ -71,6 +75,7 @@ const FavoriteList = ({
               addLoading={addLoading}
               removeLoading={removeLoading}
               getMovieDetails={getMovieDetails}
+              handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
             />
           </li>
         ))}
@@ -86,6 +91,7 @@ const FavoriteList = ({
               addLoading={addLoading}
               removeLoading={removeLoading}
               getSeriesDetails={getSeriesDetails}
+              handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
             />
           </li>
         ))}

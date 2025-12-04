@@ -14,6 +14,7 @@ type Props = {
   addLoading: boolean;
   removeLoading: boolean;
   getSeriesDetails: (id: number) => void;
+  handleOpenPopUpTVDetail?: (videoId: number) => void;
 };
 
 const SeriesCard = ({
@@ -26,8 +27,11 @@ const SeriesCard = ({
   addLoading,
   removeLoading,
   getSeriesDetails,
+  handleOpenPopUpTVDetail,
 }: Props) => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+
+  const isMobile = window.innerWidth < 768;
 
   return (
     <div
@@ -38,6 +42,11 @@ const SeriesCard = ({
       }}
       onMouseLeave={() => {
         setHoveredId(null);
+      }}
+      onClick={() => {
+        if (isMobile) {
+          handleOpenPopUpTVDetail!(video.id);
+        }
       }}
     >
       <div className="aspect-2/3">
@@ -60,6 +69,7 @@ const SeriesCard = ({
         addLoading={addLoading}
         removeLoading={removeLoading}
         hoveredId={hoveredId}
+        handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
       />
     </div>
   );

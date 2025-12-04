@@ -19,6 +19,7 @@ type Props = {
   addLoading: boolean;
   removeLoading: boolean;
   hoveredId: number | null;
+  handleOpenPopUpTVDetail?: (videoId: number) => void;
 };
 
 const HoveredSeriesCard = ({
@@ -31,6 +32,7 @@ const HoveredSeriesCard = ({
   addLoading,
   removeLoading,
   hoveredId,
+  handleOpenPopUpTVDetail,
 }: Props) => {
   return (
     <div
@@ -91,6 +93,7 @@ const HoveredSeriesCard = ({
               type="button"
               value={<ChevronDownIcon className="size-4" />}
               variant="secondaryOutline"
+              handleClick={() => handleOpenPopUpTVDetail?.(video.id)}
             />
           </div>
         </div>

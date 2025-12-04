@@ -82,7 +82,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 shadow-xl w-full bg-page-header-bg py-1.5 px-5 text-text-light-primary text-sm md:text-base md:py-5">
+    <nav className="sticky top-0 z-40 shadow-xl w-full bg-page-header-bg py-1.5 px-5 text-text-light-primary text-sm md:text-base md:py-5">
       <div className="flex justify-between items-center max-w-[1444px] mx-auto">
         <ul className="flex items-center gap-5 md:gap-10">
           <li className="">

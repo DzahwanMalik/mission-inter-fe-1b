@@ -1,14 +1,18 @@
-import HeroBanner from "../components/organisms/HeroBanner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useGetData from "../hooks/useGetData";
 import VideoListVertical from "../components/organisms/VideoListVertical";
 import useAddData from "../hooks/useAddData";
 import useUser from "../hooks/useUsername";
 import Alert from "../components/atoms/Alert";
 import useRemoveData from "../hooks/useRemoveData";
-import MoviePopUpDetail from "../components/molecules/MovieCard/MoviePopUpDetail";
+import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
+import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 
 const HomePage = () => {
+  const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
+    useState<boolean>(false);
+  const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
+
   const {
     topRatedMovies,
     getTopRatedMovies,
@@ -22,6 +26,28 @@ const HomePage = () => {
     getFavoriteTVSeries,
     favoriteMovies,
     favoriteTVSeries,
+    getMovieDetails,
+    movieDetail,
+    getSeriesDetails,
+    tvDetail,
+    getMovieCertification,
+    movieCertification,
+    getMovieCredits,
+    movieCredits,
+    getSimiliarMovies,
+    similiarMovies,
+    getTVSeriesCredits,
+    tvCredits,
+    getTVSeriesContentRating,
+    tvContentRating,
+    getEpisodeSeries,
+    tvEpisodes,
+    getMovieTrailerKey,
+    movieTrailerKey,
+    setMovieTrailerKey,
+    getTVSeriesTrailerKey,
+    tvTrailerKey,
+    setTvTrailerKey,
   } = useGetData();
 
   const {
@@ -71,6 +97,34 @@ const HomePage = () => {
     getFavoriteTVSeries(user!.id);
   }, [addSuccess, removeSuccess]);
 
+  const handleOpenPopUpMovieDetail = (id: number) => {
+    setShowPopUpMovieDetail(true);
+    getMovieDetails(id);
+    getMovieCertification(id);
+    getMovieCredits(id);
+    getSimiliarMovies(id);
+    getMovieTrailerKey(id);
+  };
+
+  const handleClosePopUpMovieDetail = () => {
+    setShowPopUpMovieDetail(false);
+    setMovieTrailerKey(null);
+  };
+
+  const handleOpenPopUpTVDetail = (id: number) => {
+    setShowPopUpTVDetail(true);
+    getSeriesDetails(id);
+    getTVSeriesCredits(id);
+    getTVSeriesContentRating(id);
+    getEpisodeSeries(id);
+    getTVSeriesTrailerKey(id);
+  };
+
+  const handleClosePopUpTVDetail = () => {
+    setShowPopUpTVDetail(false);
+    setTvTrailerKey(null);
+  };
+
   return (
     <>
       {addSuccess && <Alert message={addSuccess} variant="success" />}
@@ -93,6 +147,8 @@ const HomePage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             favoriteTVSeries={favoriteTVSeries}
+            handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
           />
           <VideoListVertical
             label="Film Trending"
@@ -103,6 +159,7 @@ const HomePage = () => {
             removeLoading={removeLoading}
             user={user}
             favoriteMovies={favoriteMovies}
+            handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
           />
           <VideoListVertical
             label="Film Rilis Baru"
@@ -113,10 +170,40 @@ const HomePage = () => {
             removeLoading={removeLoading}
             user={user}
             favoriteMovies={favoriteMovies}
+            handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
           />
         </section>
       </main>
-      <MoviePopUpDetail />
+      <MoviePopUpDetail
+        isShow={showPopUpMovieDetail}
+        videoDetail={movieDetail}
+        videoCertification={movieCertification}
+        videoCredits={movieCredits}
+        videoSimilar={similiarMovies}
+        videoTrailerKey={movieTrailerKey}
+        handleClose={handleClosePopUpMovieDetail}
+        handleAddFavoriteMovie={handleAddFavoriteMovie}
+        handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
+        addLoading={addLoading}
+        removeLoading={removeLoading}
+        favoriteMovies={favoriteMovies}
+        user={user}
+      />
+      <SeriesPopUpDetail
+        isShow={showPopUpTVDetail}
+        videoDetail={tvDetail}
+        videoContentRatings={tvContentRating}
+        videoCredits={tvCredits}
+        videoEpisodes={tvEpisodes}
+        videoTrailerKey={tvTrailerKey}
+        handleClose={handleClosePopUpTVDetail}
+        handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
+        handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
+        addLoading={addLoading}
+        removeLoading={removeLoading}
+        favoriteTVSeries={favoriteTVSeries}
+        user={user}
+      />
     </>
   );
 };

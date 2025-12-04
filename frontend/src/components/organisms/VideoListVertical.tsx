@@ -22,6 +22,8 @@ type Props = {
   user: User | null;
   favoriteMovies?: Array<DiscoverMovies>;
   favoriteTVSeries?: Array<DiscoverTVSeries>;
+  handleOpenPopUpMovieDetail?: (id: number) => void;
+  handleOpenPopUpTVDetail?: (id: number) => void;
 };
 
 const VideoListVertical = ({
@@ -37,6 +39,8 @@ const VideoListVertical = ({
   user,
   favoriteMovies,
   favoriteTVSeries,
+  handleOpenPopUpMovieDetail,
+  handleOpenPopUpTVDetail,
 }: Props) => {
   const { getMovieDetails, movieDetail, getSeriesDetails, tvDetail } =
     useGetData();
@@ -72,6 +76,7 @@ const VideoListVertical = ({
                   addLoading={addLoading}
                   removeLoading={removeLoading}
                   getMovieDetails={getMovieDetails}
+                  handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
                 />
               </SwiperSlide>
             ))}
@@ -88,6 +93,7 @@ const VideoListVertical = ({
                   addLoading={addLoading}
                   removeLoading={removeLoading}
                   getSeriesDetails={getSeriesDetails}
+                  handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
                 />
               </SwiperSlide>
             ))}

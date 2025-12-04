@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import EditProfileForm from "../components/organisms/EditProfileForm";
 import SubscribeBanner from "../components/molecules/SubscribeBanner";
 import useGetData from "../hooks/useGetData";
@@ -7,8 +7,14 @@ import FavoriteList from "../components/organisms/FavoriteList";
 import useAddData from "../hooks/useAddData";
 import useRemoveData from "../hooks/useRemoveData";
 import Alert from "../components/atoms/Alert";
+import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
+import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 
 const ProfilePage = () => {
+  const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
+    useState<boolean>(false);
+  const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
+
   const { user } = useUser();
 
   const {
@@ -16,6 +22,28 @@ const ProfilePage = () => {
     favoriteTVSeries,
     getFavoriteMovies,
     favoriteMovies,
+    getMovieCredits,
+    getMovieDetails,
+    getMovieCertification,
+    getSimiliarMovies,
+    getMovieTrailerKey,
+    setMovieTrailerKey,
+    getSeriesDetails,
+    getTVSeriesContentRating,
+    getTVSeriesCredits,
+    getTVSeriesTrailerKey,
+    getEpisodeSeries,
+    setTvTrailerKey,
+    movieDetail,
+    movieCertification,
+    movieCredits,
+    similiarMovies,
+    movieTrailerKey,
+    tvDetail,
+    tvCredits,
+    tvTrailerKey,
+    tvContentRating,
+    tvEpisodes,
   } = useGetData();
 
   const {
@@ -60,6 +88,34 @@ const ProfilePage = () => {
     getFavoriteMovies(user!.id);
   }, []);
 
+  const handleOpenPopUpMovieDetail = (id: number) => {
+    setShowPopUpMovieDetail(true);
+    getMovieDetails(id);
+    getMovieCertification(id);
+    getMovieCredits(id);
+    getSimiliarMovies(id);
+    getMovieTrailerKey(id);
+  };
+
+  const handleClosePopUpMovieDetail = () => {
+    setShowPopUpMovieDetail(false);
+    setMovieTrailerKey(null);
+  };
+
+  const handleOpenPopUpTVDetail = (id: number) => {
+    setShowPopUpTVDetail(true);
+    getSeriesDetails(id);
+    getTVSeriesCredits(id);
+    getTVSeriesContentRating(id);
+    getEpisodeSeries(id);
+    getTVSeriesTrailerKey(id);
+  };
+
+  const handleClosePopUpTVDetail = () => {
+    setShowPopUpTVDetail(false);
+    setTvTrailerKey(null);
+  };
+
   return (
     <>
       {addError && <Alert message={addError} variant="error" />}
@@ -87,10 +143,42 @@ const ProfilePage = () => {
               handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
               addLoading={addLoading}
               removeLoading={removeLoading}
+              handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+              handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
             />
           </div>
         </div>
       </section>
+      <MoviePopUpDetail
+        isShow={showPopUpMovieDetail}
+        videoDetail={movieDetail}
+        videoCertification={movieCertification}
+        videoCredits={movieCredits}
+        videoSimilar={similiarMovies}
+        videoTrailerKey={movieTrailerKey}
+        handleClose={handleClosePopUpMovieDetail}
+        handleAddFavoriteMovie={handleAddFavoriteMovie}
+        handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
+        addLoading={addLoading}
+        removeLoading={removeLoading}
+        favoriteMovies={favoriteMovies}
+        user={user}
+      />
+      <SeriesPopUpDetail
+        isShow={showPopUpTVDetail}
+        videoDetail={tvDetail}
+        videoCredits={tvCredits}
+        videoContentRatings={tvContentRating}
+        videoTrailerKey={tvTrailerKey}
+        videoEpisodes={tvEpisodes}
+        handleClose={handleClosePopUpTVDetail}
+        handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
+        handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
+        addLoading={addLoading}
+        removeLoading={removeLoading}
+        favoriteTVSeries={favoriteTVSeries}
+        user={user}
+      />
     </>
   );
 };

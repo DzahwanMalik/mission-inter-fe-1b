@@ -3,7 +3,6 @@ import type DiscoverMovies from "../../../types/discoverMovies";
 import type User from "../../../types/user";
 import type MovieDetail from "../../../types/movieDetail";
 import HoveredMovieCard from "./HoveredMovieCard";
-import MoviePopUpDetail from "./MoviePopUpDetail";
 
 type Props = {
   user: User | null;
@@ -15,6 +14,7 @@ type Props = {
   addLoading: boolean;
   removeLoading: boolean;
   getMovieDetails: (id: number) => void;
+  handleOpenPopUpMovieDetail?: (id: number) => void;
 };
 
 const MovieCard = ({
@@ -27,18 +27,26 @@ const MovieCard = ({
   addLoading,
   removeLoading,
   getMovieDetails,
+  handleOpenPopUpMovieDetail,
 }: Props) => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
+  const isMobile = window.innerWidth < 768;
+
   return (
     <div
-      className="group w-full cursor-pointer"
+      className="relative group w-full cursor-pointer"
       onMouseEnter={() => {
         setHoveredId(video.id);
         getMovieDetails(video.id);
       }}
       onMouseLeave={() => {
         setHoveredId(null);
+      }}
+      onClick={() => {
+        if (isMobile) {
+          handleOpenPopUpMovieDetail!(video.id);
+        }
       }}
     >
       <div className="aspect-2/3">
@@ -61,6 +69,7 @@ const MovieCard = ({
         addLoading={addLoading}
         removeLoading={removeLoading}
         hoveredId={hoveredId}
+        handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
       />
     </div>
   );
