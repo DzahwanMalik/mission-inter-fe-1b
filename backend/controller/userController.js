@@ -152,8 +152,6 @@ const getFavoriteMovies = async (req, res) => {
 
         const data = await res.json();
 
-        console.log(data);
-
         return data;
       })
     );
@@ -216,8 +214,6 @@ const getFavoriteTVSeries = async (req, res) => {
 
         const data = await res.json();
 
-        console.log(data);
-
         return data;
       })
     );
@@ -227,7 +223,38 @@ const getFavoriteTVSeries = async (req, res) => {
       data: result,
     });
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+const removeFavoriteMovie = async (req, res) => {
+  try {
+    const { userId, videoId } = req.params;
+
+    const favoriteMovie = await FavoriteMovie.destroy({
+      where: { userId, videoId },
+    });
+
+    res
+      .status(200)
+      .json({ message: "Favorite berhasil dihapus", data: favoriteMovie });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const removeFavoriteTVSeries = async (req, res) => {
+  try {
+    const { userId, videoId } = req.params;
+
+    const favoriteTVSeries = await FavoriteTVSeries.destroy({
+      where: { userId, videoId },
+    });
+
+    res
+      .status(200)
+      .json({ message: "Favorite berhasil dihapus", data: favoriteTVSeries });
+  } catch (err) {
     res.status(500).json(err);
   }
 };
@@ -240,4 +267,6 @@ export {
   getFavoriteMovies,
   addFavoriteTVSeries,
   getFavoriteTVSeries,
+  removeFavoriteMovie,
+  removeFavoriteTVSeries,
 };

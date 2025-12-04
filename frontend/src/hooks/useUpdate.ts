@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../lib/axios";
 import type User from "../types/user";
 
@@ -7,6 +7,17 @@ const useUpdate = () => {
   const [updateLoading, setUpdateLoading] = useState<boolean>(false);
   const [updateError, setUpdateError] = useState<string | null>(null);
   const [updateSuccess, setUpdateSuccess] = useState<string | null>(null);
+
+  useEffect(() => {
+      if (!updateSuccess && !updateError) return;
+  
+      const timer = setTimeout(() => {
+        setUpdateSuccess(null);
+        setUpdateError(null);
+      }, 2000);
+  
+      return () => clearTimeout(timer);
+    }, [updateSuccess, updateError]);
 
   const handleError = (err: any) => {
     setUpdateError(err);

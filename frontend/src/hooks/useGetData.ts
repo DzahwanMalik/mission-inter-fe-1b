@@ -9,7 +9,7 @@ import type TVSeriesDetail from "../types/TVSeriesDetail";
 
 const useGetData = () => {
   // Movies
-  const [favoriteMovies, setFavoriteMovies] = useState<Array<MovieDetail>>([]);
+  const [favoriteMovies, setFavoriteMovies] = useState<Array<DiscoverMovies>>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Array<DiscoverMovies>>(
     []
   );
@@ -21,7 +21,7 @@ const useGetData = () => {
   const [movieGenres, setMovieGenres] = useState<Array<Genres>>([]);
 
   // TV Series
-  const [favoriteTVSeries, setFavoriteTVSeries] = useState<Array<TVSeriesDetail>>([]);
+  const [favoriteTVSeries, setFavoriteTVSeries] = useState<Array<DiscoverTVSeries>>([]);
   const [topRatedTVSeries, setTopRatedTVSeries] = useState<
     Array<DiscoverTVSeries>
   >([]);

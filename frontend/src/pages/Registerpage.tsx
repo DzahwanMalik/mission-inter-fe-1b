@@ -1,6 +1,6 @@
 import Logo from "../components/atoms/Logo";
 import AuthContainer from "../components/molecules/AuthContainer";
-import RegisterForm from "../components/molecules/RegisterForm";
+import RegisterForm from "../components/organisms/RegisterForm";
 
 const RegisterPage = () => {
   return (

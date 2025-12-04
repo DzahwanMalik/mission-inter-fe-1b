@@ -1,6 +1,6 @@
 import Logo from "../components/atoms/Logo";
 import AuthContainer from "../components/molecules/AuthContainer";
-import LoginForm from "../components/molecules/LoginForm";
+import LoginForm from "../components/organisms/LoginForm";
 
 const LoginPage = () => {
   return (
