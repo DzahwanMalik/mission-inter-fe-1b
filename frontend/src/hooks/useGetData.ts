@@ -7,9 +7,12 @@ import type Genres from "../types/genres";
 import axiosInstance from "../lib/axios";
 import type TVSeriesDetail from "../types/TVSeriesDetail";
 import type VideoCredits from "../types/videoCredits";
-import { set } from "zod";
+import type AllTrending from "../types/allTrending";
 
 const useGetData = () => {
+  // Common
+  const [allTrending, setAllTrending] = useState<Array<AllTrending>>([]);
+
   // Movies
   const [favoriteMovies, setFavoriteMovies] = useState<Array<DiscoverMovies>>(
     []
@@ -52,6 +55,18 @@ const useGetData = () => {
 
   const handleError = (err: any) => {
     setGetError(err);
+  };
+
+  const getAllTrending = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get("/trending/all/week");
+      setAllTrending(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
   };
 
   const getTopRatedMovies = async () => {
@@ -336,6 +351,8 @@ const useGetData = () => {
   };
 
   return {
+    allTrending,
+    getAllTrending,
     topRatedMovies,
     getTopRatedMovies,
     getMovieDetails,

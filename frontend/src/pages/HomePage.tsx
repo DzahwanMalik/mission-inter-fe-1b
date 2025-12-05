@@ -7,6 +7,7 @@ import Alert from "../components/atoms/Alert";
 import useRemoveData from "../hooks/useRemoveData";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
+import HeroBanner from "../components/organisms/HeroBanner";
 
 const HomePage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
@@ -14,6 +15,8 @@ const HomePage = () => {
   const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
 
   const {
+    allTrending,
+    getAllTrending,
     topRatedMovies,
     getTopRatedMovies,
     topRatedTVSeries,
@@ -57,6 +60,7 @@ const HomePage = () => {
     addError,
     addSuccess,
   } = useAddData();
+
   const {
     removeFavoriteMovie,
     removeFavoriteTVSeries,
@@ -82,20 +86,6 @@ const HomePage = () => {
   const handleRemoveFavoriteTVSeries = (userId: string, videoId: string) => {
     removeFavoriteTVSeries(userId, videoId);
   };
-
-  useEffect(() => {
-    getTopRatedMovies();
-    getTopRatedTVSeries();
-    getPopularMovies();
-    getNewReleaseMovies();
-    getFavoriteMovies(user!.id);
-    getFavoriteTVSeries(user!.id);
-  }, []);
-
-  useEffect(() => {
-    getFavoriteMovies(user!.id);
-    getFavoriteTVSeries(user!.id);
-  }, [addSuccess, removeSuccess]);
 
   const handleOpenPopUpMovieDetail = (id: number) => {
     setShowPopUpMovieDetail(true);
@@ -125,13 +115,34 @@ const HomePage = () => {
     setTvTrailerKey(null);
   };
 
+  useEffect(() => {
+    getAllTrending();
+    getTopRatedMovies();
+    getTopRatedTVSeries();
+    getPopularMovies();
+    getNewReleaseMovies();
+    getFavoriteMovies(user!.id);
+    getFavoriteTVSeries(user!.id);
+  }, []);
+
+  useEffect(() => {
+    getFavoriteMovies(user!.id);
+    getFavoriteTVSeries(user!.id);
+  }, [addSuccess, removeSuccess]);
+
   return (
     <>
       {addSuccess && <Alert message={addSuccess} variant="success" />}
       {removeSuccess && <Alert message={removeSuccess} variant="success" />}
       {addError && <Alert message={addError} variant="error" />}
       {removeError && <Alert message={removeError} variant="error" />}
-      <header>{/* <HeroBanner video={films} /> */}</header>
+      <header>
+        <HeroBanner
+          video={allTrending}
+          handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+          handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+        />
+      </header>
       <main className="bg-page-header-bg flex flex-col justify-center">
         <section className="w-full max-w-[1444px] m-auto">
           <VideoListVertical

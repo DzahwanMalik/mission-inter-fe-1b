@@ -6,34 +6,65 @@ import {
 import Button from "../atoms/Button";
 import Chip from "../atoms/Chip";
 import { useEffect, useState } from "react";
-import type Film from "../../types/film";
+import type AllTrending from "../../types/allTrending";
+import useGetData from "../../hooks/useGetData";
+import truncateDescription from "../../utils/truncateDesc";
 
 type Props = {
-  video: Array<Film>;
+  video: Array<AllTrending>;
+  handleOpenPopUpMovieDetail?: (id: number) => void;
+  handleOpenPopUpTVDetail?: (id: number) => void;
 };
 
-const HeroBanner = ({ video }: Props) => {
-  const [randomVideo, setRandomVideo] = useState<Film>(video[0]);
+const HeroBanner = ({
+  video,
+  handleOpenPopUpMovieDetail,
+  handleOpenPopUpTVDetail,
+}: Props) => {
   const [isMuted, setIsMuted] = useState<number>(1);
+  const [currentVideo, setCurrentVideo] = useState<AllTrending | null>(null);
 
-  const trailerUrl = `https://www.youtube.com/embed/${randomVideo?.trailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${randomVideo?.trailerKey}`;
+  const {
+    getMovieTrailerKey,
+    getTVSeriesTrailerKey,
+    movieTrailerKey,
+    tvTrailerKey,
+    getMovieCertification,
+    movieCertification,
+    getTVSeriesContentRating,
+    tvContentRating,
+  } = useGetData();
+
+  // Set Current Video
+  useEffect(() => {
+    if (video.length > 0) {
+      const randomVideo = video[Math.floor(Math.random() * video.length)];
+      setCurrentVideo(randomVideo);
+    }
+  }, [video]);
+
+  // Fetch Trailer Key
+  useEffect(() => {
+    if (!currentVideo) return;
+
+    if (currentVideo) {
+      if (currentVideo.media_type === "movie") {
+        getMovieTrailerKey(currentVideo.id);
+        getMovieCertification(currentVideo.id);
+      } else if (currentVideo.media_type === "tv") {
+        getTVSeriesTrailerKey(currentVideo.id);
+        getTVSeriesContentRating(currentVideo.id);
+      }
+    }
+  }, [currentVideo]);
+
+  const trailerKey = movieTrailerKey ?? tvTrailerKey;
+
+  const trailerUrl = `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${trailerKey}`;
 
   const handleMute = () => {
     setIsMuted(isMuted === 1 ? 0 : 1);
   };
-
-  useEffect(() => {
-    const randomFilm = () => {
-      const random = Math.floor(Math.random() * video.length);
-      setRandomVideo(video[random]);
-    };
-
-    randomFilm();
-
-    const interval = setInterval(randomFilm, 30000);
-
-    return () => clearInterval(interval);
-  }, [video]);
 
   return (
     <div className="relative h-60 w-full md:h-[586px] px-5">
@@ -49,14 +80,19 @@ const HeroBanner = ({ video }: Props) => {
         ></iframe>
       </div>
       <div className="relative top-0 left-0 w-full h-full flex items-end">
-        <div className="max-w-[1444px] mx-auto w-full py-5 flex gap-3 flex-col md:py-10">
-          <div className="w-full text-text-light-primary flex gap-3 flex-col md:w-1/2">
+        <div className="max-w-[1444px] mx-auto w-full py-5 flex gap-3 md:gap-8 flex-col md:py-10">
+          <div className="w-full text-text-light-primary flex gap-3 md:gap-5 flex-col md:w-1/2">
             <h2 className="font-bold text-2xl md:text-4xl">
-              {randomVideo?.title}
+              {currentVideo?.title ?? currentVideo?.name}
             </h2>
-            <p className="text-sm md:text-base">{randomVideo?.description}</p>
+            <p className="text-sm md:text-base">
+              {truncateDescription(
+                currentVideo?.overview ?? null,
+                window.innerWidth < 768 ? 100 : 200
+              )}
+            </p>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center text-xs md:text-sm">
             <div className="flex gap-3">
               <Button value="Mulai" variant="primary" type="button" />
               <Button
@@ -68,9 +104,16 @@ const HeroBanner = ({ video }: Props) => {
                 }
                 variant="secondary"
                 type="button"
+                handleClick={() => {
+                  if (currentVideo?.media_type === "movie") {
+                    handleOpenPopUpMovieDetail?.(currentVideo.id);
+                  } else if (currentVideo?.media_type === "tv") {
+                    handleOpenPopUpTVDetail?.(currentVideo.id);
+                  }
+                }}
               />
               <Chip
-                value={randomVideo?.ageRating}
+                value={movieCertification ?? tvContentRating}
                 variant="secondaryOutline"
                 size="small"
               />
