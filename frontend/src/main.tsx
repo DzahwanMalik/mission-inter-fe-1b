@@ -10,6 +10,9 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import { UserProvider } from "./contexts/userContext";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
+import SeriesPage from "./pages/SeriesPage";
+import FilmsPage from "./pages/FilmPage";
+import MyListPage from "./pages/MyListPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -27,9 +30,9 @@ createRoot(document.getElementById("root")!).render(
           <Route path="/:user" element={<ProtectedRoutes />}>
             <Route index element={<Navigate to="home" replace />} />
             <Route path="home" element={<HomePage />} />
-            <Route path="series" element={<h1>Ini Series Page</h1>} />
-            <Route path="films" element={<h1>Ini Films Page</h1>} />
-            <Route path="daftarSaya" element={<h1>Ini Daftar Saya Page</h1>} />
+            <Route path="series" element={<SeriesPage />} />
+            <Route path="movies" element={<FilmsPage />} />
+            <Route path="my-list" element={<MyListPage />} />
             <Route path="profile" element={<ProfilePage />} />
           </Route>
 

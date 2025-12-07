@@ -44,7 +44,7 @@ const FavoriteList = ({
   const displayedSeries = showAll ? series : series?.slice(0, 7);
 
   return (
-    <div className="">
+    <div className="py-10">
       <div className="flex justify-between items-center mb-5">
         <h2 className="text-text-light-primary text-2xl font-semibold">
           {label}

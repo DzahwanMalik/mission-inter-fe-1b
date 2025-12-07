@@ -20,7 +20,7 @@ const Button = ({
 
   const variantStyles: Record<Variant, string> = {
     primary: "bg-primary text-text-light-primary hover:bg-primary-300",
-    secondary: "bg-extra-bg text-text-light-primary hover:bg-paper-bg",
+    secondary: "bg-paper-bg text-text-light-primary hover:bg-extra-bg",
     tertiary: "bg-body-bg text-text-light-primary hover:bg-paper-bg",
     primaryOutline: "border border-primary text-primary hover:bg-primary hover:text-text-light-primary",
     secondaryOutline: "border border-text-light-secondary text-text-light-secondary hover:bg-extra-bg hover:text-text-light-primary",

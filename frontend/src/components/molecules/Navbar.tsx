@@ -43,15 +43,15 @@ const Navbar = () => {
 
   const links: Link[] = [
     {
-      to: "/:user/series",
+      to: `/${user?.username}/series`,
       label: "Series",
     },
     {
-      to: "/:user/films",
+      to: `/${user?.username}/movies`,
       label: "Film",
     },
     {
-      to: "/:user/daftarSaya",
+      to: `/${user?.username}/my-list`,
       label: "Daftar Saya",
     },
   ];
@@ -103,7 +103,11 @@ const Navbar = () => {
           className="relative flex gap-2 items-center cursor-pointer px-3 py-2 rounded-md transition-all duration-300 ease-in-out group hover:bg-extra-bg"
         >
           <div className="rounded-full size-9 overflow-hidden">
-            <img src={user?.avatar || "/profile.png"} alt="User Avatar" className="w-full h-full object-cover" />
+            <img
+              src={user?.avatar || "/profile.png"}
+              alt="User Avatar"
+              className="w-full h-full object-cover"
+            />
           </div>
           <ChevronDownIcon className="size-6" />
 

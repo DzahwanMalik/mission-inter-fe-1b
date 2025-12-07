@@ -1,28 +1,34 @@
-import {
-  InformationCircleIcon,
-  SpeakerWaveIcon,
-  SpeakerXMarkIcon,
-} from "@heroicons/react/24/outline";
-import Button from "../atoms/Button";
-import Chip from "../atoms/Chip";
 import { useEffect, useState } from "react";
 import type AllTrending from "../../types/allTrending";
 import useGetData from "../../hooks/useGetData";
-import truncateDescription from "../../utils/truncateDesc";
+import HeroBannerTrailer from "../molecules/HeroBannerTrailer";
+import HeroBannerContent from "../molecules/HeroBannerContent";
+import type DiscoverTVSeries from "../../types/discoverTVSeries";
+import type DiscoverMovies from "../../types/discoverMovies";
 
 type Props = {
-  video: Array<AllTrending>;
+  video?: Array<AllTrending>;
+  films?: Array<DiscoverMovies>;
+  series?: Array<DiscoverTVSeries>;
   handleOpenPopUpMovieDetail?: (id: number) => void;
   handleOpenPopUpTVDetail?: (id: number) => void;
 };
 
 const HeroBanner = ({
   video,
+  films,
+  series,
   handleOpenPopUpMovieDetail,
   handleOpenPopUpTVDetail,
 }: Props) => {
+  const [genreId, setGenreId] = useState<string | null>(null);
   const [isMuted, setIsMuted] = useState<number>(1);
-  const [currentVideo, setCurrentVideo] = useState<AllTrending | null>(null);
+  const [commmonCurrentVideo, setCommonCurrentVideo] =
+    useState<AllTrending | null>(null);
+  const [seriesCurrentVideo, setSeriesCurrentVideo] =
+    useState<DiscoverTVSeries | null>(null);
+  const [movieCurrentVideo, setMovieCurrentVideo] =
+    useState<DiscoverMovies | null>(null);
 
   const {
     getMovieTrailerKey,
@@ -33,108 +39,164 @@ const HeroBanner = ({
     movieCertification,
     getTVSeriesContentRating,
     tvContentRating,
+    getMovieGenres,
+    movieGenres,
+    getTVSeriesGenres,
+    tvGenres,
+    getMovieByGenre,
+    movieByGenre,
+    getTVByGenre,
+    tvByGenre,
   } = useGetData();
 
   // Set Current Video
   useEffect(() => {
-    if (video.length > 0) {
-      const randomVideo = video[Math.floor(Math.random() * video.length)];
-      setCurrentVideo(randomVideo);
+    if (video && video!.length > 0) {
+      const randomVideo = video![Math.floor(Math.random() * video!.length)];
+      setCommonCurrentVideo(randomVideo);
     }
   }, [video]);
 
-  // Fetch Trailer Key
   useEffect(() => {
-    if (!currentVideo) return;
-
-    if (currentVideo) {
-      if (currentVideo.media_type === "movie") {
-        getMovieTrailerKey(currentVideo.id);
-        getMovieCertification(currentVideo.id);
-      } else if (currentVideo.media_type === "tv") {
-        getTVSeriesTrailerKey(currentVideo.id);
-        getTVSeriesContentRating(currentVideo.id);
+    if (series && series!.length > 0) {
+      if (!genreId) {
+        const randomVideo = series![Math.floor(Math.random() * series!.length)];
+        setSeriesCurrentVideo(randomVideo);
+      } else {
+        const randomVideo =
+          tvByGenre![Math.floor(Math.random() * tvByGenre!.length)];
+        setSeriesCurrentVideo(randomVideo);
       }
     }
-  }, [currentVideo]);
+    getTVSeriesGenres();
+  }, [series, tvByGenre]);
 
-  const trailerKey = movieTrailerKey ?? tvTrailerKey;
+  useEffect(() => {
+    if (films && films!.length > 0) {
+      if (!genreId) {
+        const randomVideo = films![Math.floor(Math.random() * films!.length)];
+        setMovieCurrentVideo(randomVideo);
+      } else {
+        const randomVideo =
+          movieByGenre![Math.floor(Math.random() * movieByGenre!.length)];
+        setMovieCurrentVideo(randomVideo);
+      }
+    }
+    getMovieGenres();
+  }, [films, movieByGenre]);
 
-  const trailerUrl = `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${trailerKey}`;
+  // Fetch Trailer Key
+  useEffect(() => {
+    if (!commmonCurrentVideo) return;
+
+    if (commmonCurrentVideo) {
+      if (commmonCurrentVideo.media_type === "movie") {
+        getMovieTrailerKey(commmonCurrentVideo.id);
+        getMovieCertification(commmonCurrentVideo.id);
+      } else if (commmonCurrentVideo.media_type === "tv") {
+        getTVSeriesTrailerKey(commmonCurrentVideo.id);
+        getTVSeriesContentRating(commmonCurrentVideo.id);
+      }
+    }
+  }, [commmonCurrentVideo]);
+
+  useEffect(() => {
+    if (!seriesCurrentVideo) return;
+
+    if (seriesCurrentVideo) {
+      getTVSeriesTrailerKey(seriesCurrentVideo.id);
+      getTVSeriesContentRating(seriesCurrentVideo.id);
+    }
+  }, [seriesCurrentVideo]);
+
+  useEffect(() => {
+    if (!movieCurrentVideo) return;
+
+    if (movieCurrentVideo) {
+      getMovieTrailerKey(movieCurrentVideo.id);
+      getMovieCertification(movieCurrentVideo.id);
+    }
+  }, [movieCurrentVideo]);
+
+  const commonTrailerKey = movieTrailerKey ?? tvTrailerKey;
+  const commonTrailerUrl = `https://www.youtube.com/embed/${commonTrailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${commonTrailerKey}`;
+
+  const seriesTrailerUrl = `https://www.youtube.com/embed/${tvTrailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${tvTrailerKey}`;
+
+  const movieTrailerUrl = `https://www.youtube.com/embed/${movieTrailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${movieTrailerKey}`;
 
   const handleMute = () => {
     setIsMuted(isMuted === 1 ? 0 : 1);
   };
 
+  const handleSetGenre = (id: string) => {
+    if (movieCurrentVideo) {
+      getMovieByGenre(id);
+      setGenreId(id);
+    } else if (seriesCurrentVideo) {
+      getTVByGenre(id);
+      setGenreId(id);
+    }
+  };
+
   return (
     <div className="relative h-60 w-full md:h-[586px] px-5">
-      <div className="absolute top-0 left-0 w-full h-full after:absolute after:inset-0 after:bg-linear-to-t after:from-page-header-bg after:to-transparent">
-        <iframe
-          src={trailerUrl}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-          className="w-full h-full object-cover object-center"
-        ></iframe>
-      </div>
-      <div className="relative top-0 left-0 w-full h-full flex items-end">
-        <div className="max-w-[1444px] mx-auto w-full py-5 flex gap-3 md:gap-8 flex-col md:py-10">
-          <div className="w-full text-text-light-primary flex gap-3 md:gap-5 flex-col md:w-1/2">
-            <h2 className="font-bold text-2xl md:text-4xl">
-              {currentVideo?.title ?? currentVideo?.name}
-            </h2>
-            <p className="text-sm md:text-base">
-              {truncateDescription(
-                currentVideo?.overview ?? null,
-                window.innerWidth < 768 ? 100 : 200
-              )}
-            </p>
-          </div>
-          <div className="flex justify-between items-center text-xs md:text-sm">
-            <div className="flex gap-3">
-              <Button value="Mulai" variant="primary" type="button" />
-              <Button
-                value={
-                  <div className="flex gap-1 justify-center items-center">
-                    <InformationCircleIcon className="size-4" />
-                    <span>Selengkapnya</span>
-                  </div>
-                }
-                variant="secondary"
-                type="button"
-                handleClick={() => {
-                  if (currentVideo?.media_type === "movie") {
-                    handleOpenPopUpMovieDetail?.(currentVideo.id);
-                  } else if (currentVideo?.media_type === "tv") {
-                    handleOpenPopUpTVDetail?.(currentVideo.id);
-                  }
-                }}
-              />
-              <Chip
-                value={movieCertification ?? tvContentRating}
-                variant="secondaryOutline"
-                size="small"
-              />
-            </div>
-            <div>
-              <Button
-                value={
-                  isMuted ? (
-                    <SpeakerXMarkIcon className="size-4" />
-                  ) : (
-                    <SpeakerWaveIcon className="size-4" />
-                  )
-                }
-                variant="secondaryOutline"
-                type="button"
-                handleClick={handleMute}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      {commmonCurrentVideo && (
+        <>
+          <HeroBannerTrailer trailerUrl={commonTrailerUrl} />
+          <HeroBannerContent
+            title={commmonCurrentVideo?.title ?? commmonCurrentVideo?.name}
+            description={commmonCurrentVideo?.overview}
+            handleOpenPopUpDetail={() => {
+              if (commmonCurrentVideo?.media_type === "movie") {
+                handleOpenPopUpMovieDetail?.(commmonCurrentVideo.id);
+              } else if (commmonCurrentVideo?.media_type === "tv") {
+                handleOpenPopUpTVDetail?.(commmonCurrentVideo.id);
+              }
+            }}
+            ageRating={movieCertification ?? tvContentRating}
+            isMuted={isMuted}
+            handleMute={handleMute}
+            dropdownGenres={false}
+          />
+        </>
+      )}
+      {seriesCurrentVideo && (
+        <>
+          <HeroBannerTrailer trailerUrl={seriesTrailerUrl} />
+          <HeroBannerContent
+            title={seriesCurrentVideo?.name}
+            description={seriesCurrentVideo?.overview}
+            handleOpenPopUpDetail={() =>
+              handleOpenPopUpTVDetail?.(seriesCurrentVideo.id)
+            }
+            ageRating={tvContentRating}
+            isMuted={isMuted}
+            handleMute={handleMute}
+            genreLinks={tvGenres}
+            dropdownGenres={true}
+            handleSetGenre={handleSetGenre}
+          />
+        </>
+      )}
+      {movieCurrentVideo && (
+        <>
+          <HeroBannerTrailer trailerUrl={movieTrailerUrl} />
+          <HeroBannerContent
+            title={movieCurrentVideo?.title}
+            description={movieCurrentVideo?.overview}
+            handleOpenPopUpDetail={() =>
+              handleOpenPopUpMovieDetail?.(movieCurrentVideo.id)
+            }
+            ageRating={movieCertification}
+            isMuted={isMuted}
+            handleMute={handleMute}
+            genreLinks={movieGenres}
+            dropdownGenres={true}
+            handleSetGenre={handleSetGenre}
+          />
+        </>
+      )}
     </div>
   );
 };

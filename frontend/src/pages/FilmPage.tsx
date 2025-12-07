@@ -1,91 +1,48 @@
 import { useEffect, useState } from "react";
-import useGetData from "../hooks/useGetData";
-import VideoListVertical from "../components/organisms/VideoListVertical";
-import useAddData from "../hooks/useAddData";
-import useUser from "../hooks/useUsername";
-import Alert from "../components/atoms/Alert";
-import useRemoveData from "../hooks/useRemoveData";
-import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
-import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 import HeroBanner from "../components/organisms/HeroBanner";
+import useGetData from "../hooks/useGetData";
+import useUser from "../hooks/useUsername";
+import useAddData from "../hooks/useAddData";
+import useRemoveData from "../hooks/useRemoveData";
+import Alert from "../components/atoms/Alert";
+import VideoListVertical from "../components/organisms/VideoListVertical";
+import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 
-const HomePage = () => {
+const FilmsPage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
     useState<boolean>(false);
-  const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
+
+  const { user } = useUser();
 
   const {
-    allTrending,
-    getAllTrending,
-    topRatedMovies,
-    getTopRatedMovies,
-    topRatedTVSeries,
-    getTopRatedTVSeries,
-    getPopularMovies,
-    popularMovies,
-    newReleaseMovies,
-    getNewReleaseMovies,
-    getFavoriteMovies,
-    getFavoriteTVSeries,
-    favoriteMovies,
-    favoriteTVSeries,
     getMovieDetails,
     movieDetail,
-    getSeriesDetails,
-    tvDetail,
     getMovieCertification,
     movieCertification,
     getMovieCredits,
     movieCredits,
     getSimiliarMovies,
     similiarMovies,
-    getTVSeriesCredits,
-    tvCredits,
-    getTVSeriesContentRating,
-    tvContentRating,
-    getEpisodeSeries,
-    tvEpisodes,
     getMovieTrailerKey,
     movieTrailerKey,
-    setMovieTrailerKey,
-    getTVSeriesTrailerKey,
-    tvTrailerKey,
-    setTvTrailerKey,
+    getFavoriteMovies,
+    favoriteMovies,
+    getMovieTrending,
+    movieTrending,
+    getMovieAiringToday,
+    movieAiringToday,
+    getTopRatedMovies,
+    topRatedMovies,
+    getPopularMovies,
+    popularMovies,
+    getNewReleaseMovies,
+    newReleaseMovies,
   } = useGetData();
 
-  const {
-    addFavoriteMovie,
-    addFavoriteTVSeries,
-    addLoading,
-    addError,
-    addSuccess,
-  } = useAddData();
+  const { addFavoriteMovie, addError, addLoading, addSuccess } = useAddData();
 
-  const {
-    removeFavoriteMovie,
-    removeFavoriteTVSeries,
-    removeLoading,
-    removeError,
-    removeSuccess,
-  } = useRemoveData();
-
-  const { user } = useUser();
-
-  const handleAddFavoriteMovie = (userId: string, videoId: string) => {
-    addFavoriteMovie(userId, videoId);
-  };
-
-  const handleAddFavoriteTVSeries = (userId: string, videoId: string) => {
-    addFavoriteTVSeries(userId, videoId);
-  };
-
-  const handleRemoveFavoriteMovie = (userId: string, videoId: string) => {
-    removeFavoriteMovie(userId, videoId);
-  };
-
-  const handleRemoveFavoriteTVSeries = (userId: string, videoId: string) => {
-    removeFavoriteTVSeries(userId, videoId);
-  };
+  const { removeFavoriteTVSeries, removeError, removeLoading, removeSuccess } =
+    useRemoveData();
 
   const handleOpenPopUpMovieDetail = (id: number) => {
     setShowPopUpMovieDetail(true);
@@ -94,40 +51,32 @@ const HomePage = () => {
     getMovieCredits(id);
     getSimiliarMovies(id);
     getMovieTrailerKey(id);
+    getFavoriteMovies(user!.id);
+  };
+
+  const handleAddFavoriteMovie = (userId: string, videoId: string) => {
+    addFavoriteMovie(userId, videoId);
+  };
+
+  const handleRemoveFavoriteMovie = (userId: string, videoId: string) => {
+    removeFavoriteTVSeries(userId, videoId);
   };
 
   const handleClosePopUpMovieDetail = () => {
     setShowPopUpMovieDetail(false);
-    setMovieTrailerKey(null);
-  };
-
-  const handleOpenPopUpTVDetail = (id: number) => {
-    setShowPopUpTVDetail(true);
-    getSeriesDetails(id);
-    getTVSeriesCredits(id);
-    getTVSeriesContentRating(id);
-    getEpisodeSeries(id);
-    getTVSeriesTrailerKey(id);
-  };
-
-  const handleClosePopUpTVDetail = () => {
-    setShowPopUpTVDetail(false);
-    setTvTrailerKey(null);
   };
 
   useEffect(() => {
-    getAllTrending();
+    getMovieTrending();
+    getMovieAiringToday();
     getTopRatedMovies();
-    getTopRatedTVSeries();
     getPopularMovies();
     getNewReleaseMovies();
     getFavoriteMovies(user!.id);
-    getFavoriteTVSeries(user!.id);
   }, []);
 
   useEffect(() => {
     getFavoriteMovies(user!.id);
-    getFavoriteTVSeries(user!.id);
   }, [addSuccess, removeSuccess]);
 
   return (
@@ -138,28 +87,33 @@ const HomePage = () => {
       {removeError && <Alert message={removeError} variant="error" />}
       <header>
         <HeroBanner
-          video={allTrending}
+          films={movieTrending}
           handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
-          handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
         />
       </header>
       <main className="bg-page-header-bg flex flex-col justify-center">
         <section className="w-full max-w-[1444px] m-auto">
           <VideoListVertical
-            label="Top Rating Film dan Series Hari Ini"
-            films={topRatedMovies}
-            series={topRatedTVSeries}
+            label="Tayang Hari Ini"
+            films={movieAiringToday}
             handleAddFavoriteMovie={handleAddFavoriteMovie}
-            handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
             handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
-            handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
             addLoading={addLoading}
             removeLoading={removeLoading}
             user={user}
             favoriteMovies={favoriteMovies}
-            favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
-            handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+          />
+          <VideoListVertical
+            label="Top Rating Series Hari ini"
+            films={topRatedMovies}
+            handleAddFavoriteMovie={handleAddFavoriteMovie}
+            handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
+            addLoading={addLoading}
+            removeLoading={removeLoading}
+            user={user}
+            favoriteMovies={favoriteMovies}
+            handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
           />
           <VideoListVertical
             label="Film Populer"
@@ -173,7 +127,7 @@ const HomePage = () => {
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
           />
           <VideoListVertical
-            label="Film Rilis Baru"
+            label="Rilis Baru"
             films={newReleaseMovies}
             handleAddFavoriteMovie={handleAddFavoriteMovie}
             handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
@@ -200,23 +154,8 @@ const HomePage = () => {
         favoriteMovies={favoriteMovies}
         user={user}
       />
-      <SeriesPopUpDetail
-        isShow={showPopUpTVDetail}
-        videoDetail={tvDetail}
-        videoContentRatings={tvContentRating}
-        videoCredits={tvCredits}
-        videoEpisodes={tvEpisodes}
-        videoTrailerKey={tvTrailerKey}
-        handleClose={handleClosePopUpTVDetail}
-        handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
-        handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
-        addLoading={addLoading}
-        removeLoading={removeLoading}
-        favoriteTVSeries={favoriteTVSeries}
-        user={user}
-      />
     </>
   );
 };
 
-export default HomePage;
+export default FilmsPage;

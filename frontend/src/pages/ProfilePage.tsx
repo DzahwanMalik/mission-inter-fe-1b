@@ -124,7 +124,7 @@ const ProfilePage = () => {
       {removeSuccess && <Alert message={removeSuccess} variant="success" />}
       <section className="bg-page-header-bg px-5 py-5">
         <div className="w-full max-w-[1444px] m-auto">
-          <div className="flex flex-col gap-20 mb-20 md:flex-row-reverse">
+          <div className="flex flex-col gap-10 mb-20 md:flex-row-reverse">
             <div className="">
               <SubscribeBanner />
             </div>

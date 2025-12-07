@@ -34,6 +34,11 @@ const useGetData = () => {
     []
   );
   const [movieTrailerKey, setMovieTrailerKey] = useState<string | null>(null);
+  const [movieTrending, setMovieTrending] = useState<Array<DiscoverMovies>>([]);
+  const [movieAiringToday, setMovieAiringToday] = useState<
+    Array<DiscoverMovies>
+  >([]);
+  const [movieByGenre, setMovieByGenre] = useState<Array<DiscoverMovies>>([]);
 
   // TV Series
   const [favoriteTVSeries, setFavoriteTVSeries] = useState<
@@ -48,6 +53,13 @@ const useGetData = () => {
   const [tvContentRating, setTvContentRating] = useState<string | null>(null);
   const [tvEpisodes, setTvEpisodes] = useState<Array<EpisodeSeries>>([]);
   const [tvTrailerKey, setTvTrailerKey] = useState<string | null>(null);
+  const [tvTrending, setTvTrending] = useState<Array<DiscoverTVSeries>>([]);
+  const [tvAiringToday, setTvAiringToday] = useState<Array<DiscoverTVSeries>>(
+    []
+  );
+  const [tvPopular, setTvPopular] = useState<Array<DiscoverTVSeries>>([]);
+  const [tvNewRelease, setTvNewRelease] = useState<Array<DiscoverTVSeries>>([]);
+  const [tvByGenre, setTvByGenre] = useState<Array<DiscoverTVSeries>>([]);
 
   // Utils
   const [getLoading, setGetLoading] = useState<boolean>(false);
@@ -350,6 +362,122 @@ const useGetData = () => {
     }
   };
 
+  const getTVTrending = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/trending/tv/week`);
+      setTvTrending(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getTVAiringToday = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/tv/airing_today`);
+      setTvAiringToday(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getTVPopular = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/tv/popular`);
+      setTvPopular(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getNewReleaseTVSeries = async () => {
+    setGetLoading(true);
+    try {
+      const today = new Date().toISOString().split("T")[0];
+      const response = await axiosTMDB.get(`/discover/tv`, {
+        params: {
+          language: "en-US",
+          sort_by: "primary_release_date.desc",
+          "release_date.lte": today,
+          page: 1,
+        },
+      });
+      setTvNewRelease(response?.data.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getMovieAiringToday = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/movie/now_playing`);
+      setMovieAiringToday(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getMovieTrending = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/trending/movie/week`);
+      setMovieTrending(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getMovieByGenre = async (genreId: string) => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/discover/movie`, {
+        params: {
+          language: "en-US",
+          with_genres: genreId,
+          page: 1,
+        },
+      });
+      setMovieByGenre(response?.data.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getTVByGenre = async (genreId: string) => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/discover/tv`, {
+        params: {
+          language: "en-US",
+          with_genres: genreId,
+          page: 1,
+        },
+      });
+      setTvByGenre(response?.data.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
   return {
     allTrending,
     getAllTrending,
@@ -393,6 +521,22 @@ const useGetData = () => {
     tvTrailerKey,
     getTVSeriesTrailerKey,
     setTvTrailerKey,
+    tvTrending,
+    getTVTrending,
+    tvAiringToday,
+    getTVAiringToday,
+    tvPopular,
+    getTVPopular,
+    tvNewRelease,
+    getNewReleaseTVSeries,
+    movieTrending,
+    getMovieTrending,
+    movieAiringToday,
+    getMovieAiringToday,
+    movieByGenre,
+    getMovieByGenre,
+    tvByGenre,
+    getTVByGenre,
   };
 };
 
