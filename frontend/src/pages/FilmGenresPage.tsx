@@ -5,58 +5,39 @@ import useUser from "../hooks/useUsername";
 import Alert from "../components/atoms/Alert";
 import useRemoveData from "../hooks/useRemoveData";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
-import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
+import { useParams } from "react-router";
 import CommonVideoList from "../components/organisms/CommonVideoList";
 
-const MyListPage = () => {
+const FilmGenresPage = () => {
+  const genreId = useParams().id;
+
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
     useState<boolean>(false);
-  const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
 
   const {
     getFavoriteMovies,
-    getFavoriteTVSeries,
     favoriteMovies,
-    favoriteTVSeries,
     getMovieDetails,
     movieDetail,
-    getSeriesDetails,
-    tvDetail,
     getMovieCertification,
     movieCertification,
     getMovieCredits,
     movieCredits,
     getSimiliarMovies,
     similiarMovies,
-    getTVSeriesCredits,
-    tvCredits,
-    getTVSeriesContentRating,
-    tvContentRating,
-    getEpisodeSeries,
-    tvEpisodes,
     getMovieTrailerKey,
     movieTrailerKey,
     setMovieTrailerKey,
-    getTVSeriesTrailerKey,
-    tvTrailerKey,
-    setTvTrailerKey,
+    getMovieByGenre,
+    movieByGenre,
+    getMovieGenres,
+    movieGenres,
   } = useGetData();
 
-  const {
-    addFavoriteMovie,
-    addFavoriteTVSeries,
-    addLoading,
-    addError,
-    addSuccess,
-  } = useAddData();
+  const { addFavoriteMovie, addLoading, addError, addSuccess } = useAddData();
 
-  const {
-    removeFavoriteMovie,
-    removeFavoriteTVSeries,
-    removeLoading,
-    removeError,
-    removeSuccess,
-  } = useRemoveData();
+  const { removeFavoriteMovie, removeLoading, removeError, removeSuccess } =
+    useRemoveData();
 
   const { user } = useUser();
 
@@ -64,16 +45,8 @@ const MyListPage = () => {
     addFavoriteMovie(userId, videoId);
   };
 
-  const handleAddFavoriteTVSeries = (userId: string, videoId: string) => {
-    addFavoriteTVSeries(userId, videoId);
-  };
-
   const handleRemoveFavoriteMovie = (userId: string, videoId: string) => {
     removeFavoriteMovie(userId, videoId);
-  };
-
-  const handleRemoveFavoriteTVSeries = (userId: string, videoId: string) => {
-    removeFavoriteTVSeries(userId, videoId);
   };
 
   const handleOpenPopUpMovieDetail = (id: number) => {
@@ -90,29 +63,16 @@ const MyListPage = () => {
     setMovieTrailerKey(null);
   };
 
-  const handleOpenPopUpTVDetail = (id: number) => {
-    setShowPopUpTVDetail(true);
-    getSeriesDetails(id);
-    getTVSeriesCredits(id);
-    getTVSeriesContentRating(id);
-    getEpisodeSeries(id);
-    getTVSeriesTrailerKey(id);
-  };
-
-  const handleClosePopUpTVDetail = () => {
-    setShowPopUpTVDetail(false);
-    setTvTrailerKey(null);
-  };
-
   useEffect(() => {
     getFavoriteMovies(user!.id);
-    getFavoriteTVSeries(user!.id);
+    getMovieByGenre(genreId!);
   }, [addSuccess, removeSuccess]);
 
   useEffect(() => {
-    getFavoriteTVSeries(user!.id);
     getFavoriteMovies(user!.id);
-  }, []);
+    getMovieByGenre(genreId!);
+    getMovieGenres();
+  }, [genreId]);
 
   return (
     <>
@@ -123,17 +83,16 @@ const MyListPage = () => {
       <main className="bg-page-header-bg flex flex-col justify-center">
         <section className="w-full max-w-[1444px] m-auto">
           <CommonVideoList
-            films={favoriteMovies}
-            series={favoriteTVSeries}
-            label="Daftar Saya"
+            films={movieByGenre}
+            favoriteMovies={favoriteMovies}
+            label={`Hasil Pencarian Untuk Genre ${
+              movieGenres.find((genre) => genre.id === Number(genreId))?.name
+            }`}
             handleAddFavoriteMovie={handleAddFavoriteMovie}
-            handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
             handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
-            handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
             addLoading={addLoading}
             removeLoading={removeLoading}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
-            handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
           />
         </section>
       </main>
@@ -152,23 +111,8 @@ const MyListPage = () => {
         favoriteMovies={favoriteMovies}
         user={user}
       />
-      <SeriesPopUpDetail
-        isShow={showPopUpTVDetail}
-        videoDetail={tvDetail}
-        videoCredits={tvCredits}
-        videoContentRatings={tvContentRating}
-        videoTrailerKey={tvTrailerKey}
-        videoEpisodes={tvEpisodes}
-        handleClose={handleClosePopUpTVDetail}
-        handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
-        handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
-        addLoading={addLoading}
-        removeLoading={removeLoading}
-        favoriteTVSeries={favoriteTVSeries}
-        user={user}
-      />
     </>
   );
 };
 
-export default MyListPage;
+export default FilmGenresPage;

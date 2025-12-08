@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetData from "../../hooks/useGetData";
 import type DiscoverTVSeries from "../../types/discoverTVSeries";
 import type DiscoverMovies from "../../types/discoverMovies";
@@ -15,12 +15,14 @@ type Props = {
   handleRemoveFavoriteTVSeries?: (userId: string, videoId: string) => void;
   handleOpenPopUpMovieDetail?: (id: number) => void;
   handleOpenPopUpTVDetail?: (id: number) => void;
+  favoriteMovies?: Array<DiscoverMovies>;
+  favoriteTVSeries?: Array<DiscoverTVSeries>;
   label: string;
   addLoading: boolean;
   removeLoading: boolean;
 };
 
-const FavoriteList = ({
+const CommonVideoList = ({
   films,
   series,
   label,
@@ -30,11 +32,29 @@ const FavoriteList = ({
   handleRemoveFavoriteTVSeries,
   handleOpenPopUpMovieDetail,
   handleOpenPopUpTVDetail,
+  favoriteMovies,
+  favoriteTVSeries,
   addLoading,
   removeLoading,
 }: Props) => {
-  const { getMovieDetails, movieDetail, getSeriesDetails, tvDetail } =
-    useGetData();
+  const {
+    getMovieDetails,
+    movieDetail,
+    getSeriesDetails,
+    tvDetail,
+    tvContentRating,
+    movieCertification,
+    getTVSeriesContentRating,
+    getMovieCertification,
+  } = useGetData();
+
+  useEffect(() => {
+    if (tvDetail) {
+      getTVSeriesContentRating(tvDetail.id);
+    } else if (movieDetail) {
+      getMovieCertification(movieDetail.id);
+    }
+  }, [tvDetail, movieDetail]);
 
   const { user } = useUser();
 
@@ -68,7 +88,7 @@ const FavoriteList = ({
             <MovieCard
               user={user}
               video={item}
-              favoriteMovies={films}
+              favoriteMovies={favoriteMovies}
               movieDetail={movieDetail}
               handleAddFavoriteMovie={handleAddFavoriteMovie}
               handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
@@ -76,6 +96,8 @@ const FavoriteList = ({
               removeLoading={removeLoading}
               getMovieDetails={getMovieDetails}
               handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+              aspectRatio="aspect-2/3"
+              videoCertification={movieCertification}
             />
           </li>
         ))}
@@ -84,7 +106,7 @@ const FavoriteList = ({
             <SeriesCard
               user={user}
               video={item}
-              favoriteTVSeries={series}
+              favoriteTVSeries={favoriteTVSeries}
               tvDetail={tvDetail}
               handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
               handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
@@ -92,6 +114,8 @@ const FavoriteList = ({
               removeLoading={removeLoading}
               getSeriesDetails={getSeriesDetails}
               handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+              aspectRatio="aspect-2/3"
+              videoContentRatings={tvContentRating}
             />
           </li>
         ))}
@@ -100,4 +124,4 @@ const FavoriteList = ({
   );
 };
 
-export default FavoriteList;
+export default CommonVideoList;

@@ -4,7 +4,7 @@ import Footer from "../components/molecules/Footer/Footer";
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="bg-page-header-bg min-h-screen">
       <Navbar />
       <Outlet />
       <Footer />

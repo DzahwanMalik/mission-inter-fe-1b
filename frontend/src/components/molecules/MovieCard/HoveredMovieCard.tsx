@@ -20,6 +20,7 @@ type Props = {
   removeLoading: boolean;
   hoveredId: number | null;
   handleOpenPopUpMovieDetail?: (id: number) => void;
+  videoCertification: string | null;
 };
 
 const HoveredMovieCard = ({
@@ -33,6 +34,7 @@ const HoveredMovieCard = ({
   removeLoading,
   hoveredId,
   handleOpenPopUpMovieDetail,
+  videoCertification,
 }: Props) => {
   return (
     <div
@@ -99,7 +101,7 @@ const HoveredMovieCard = ({
         </div>
         <div className="flex gap-3 items-center">
           <Chip
-            value={video.adult ? "18+" : "13+"}
+            value={videoCertification}
             variant="secondary"
             size="small"
           />

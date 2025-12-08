@@ -7,6 +7,7 @@ import useAddData from "../hooks/useAddData";
 import useRemoveData from "../hooks/useRemoveData";
 import Alert from "../components/atoms/Alert";
 import VideoListVertical from "../components/organisms/VideoListVertical";
+import VideoListHorizontal from "../components/organisms/VideoListHorizontal";
 
 const SeriesPage = () => {
   const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
@@ -93,6 +94,17 @@ const SeriesPage = () => {
       </header>
       <main className="bg-page-header-bg flex flex-col justify-center">
         <section className="w-full max-w-[1444px] m-auto">
+          <VideoListHorizontal
+            label="Melanjutkan Tonton Series"
+            series={favoriteTVSeries}
+            handleAddFavoriteTVSeries={handleAddFavoriteTVSeries}
+            handleRemoveFavoriteTVSeries={handleRemoveFavoriteTVSeries}
+            addLoading={addLoading}
+            removeLoading={removeLoading}
+            user={user}
+            favoriteTVSeries={favoriteTVSeries}
+            handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+          />
           <VideoListVertical
             label="Tayang Hari Ini"
             series={tvAiringToday}

@@ -12,6 +12,7 @@ import type TVSeriesDetail from "../../../types/TVSeriesDetail";
 type Props = {
   user: User | null;
   video: DiscoverTVSeries;
+  videoContentRatings: string | null;
   favoriteTVSeries?: Array<DiscoverTVSeries>;
   tvDetail: TVSeriesDetail | null;
   handleAddFavoriteTVSeries?: (userId: string, videoId: string) => void;
@@ -25,6 +26,7 @@ type Props = {
 const HoveredSeriesCard = ({
   user,
   video,
+  videoContentRatings,
   favoriteTVSeries,
   tvDetail,
   handleAddFavoriteTVSeries,
@@ -99,7 +101,7 @@ const HoveredSeriesCard = ({
         </div>
         <div className="flex gap-3 items-center">
           <Chip
-            value={tvDetail?.adult ? "18+" : "13+"}
+            value={videoContentRatings}
             variant="secondary"
             size="small"
           />

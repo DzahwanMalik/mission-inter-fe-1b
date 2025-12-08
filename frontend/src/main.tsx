@@ -13,6 +13,8 @@ import ProtectedRoutes from "./routes/ProtectedRoutes";
 import SeriesPage from "./pages/SeriesPage";
 import FilmsPage from "./pages/FilmPage";
 import MyListPage from "./pages/MyListPage";
+import FilmGenresPage from "./pages/FilmGenresPage";
+import SeriesGenrePage from "./pages/SeriesGenrePage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -34,6 +36,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="movies" element={<FilmsPage />} />
             <Route path="my-list" element={<MyListPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="movies/genre/:id" element={<FilmGenresPage />} />
+            <Route path="tv/genre/:id" element={<SeriesGenrePage />} />
           </Route>
 
           <Route path="*" element={<h1>404 Page Not Found</h1>} />

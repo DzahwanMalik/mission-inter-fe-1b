@@ -3,12 +3,12 @@ import EditProfileForm from "../components/organisms/EditProfileForm";
 import SubscribeBanner from "../components/molecules/SubscribeBanner";
 import useGetData from "../hooks/useGetData";
 import useUser from "../hooks/useUsername";
-import FavoriteList from "../components/organisms/FavoriteList";
 import useAddData from "../hooks/useAddData";
 import useRemoveData from "../hooks/useRemoveData";
 import Alert from "../components/atoms/Alert";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
+import CommonVideoList from "../components/organisms/CommonVideoList";
 
 const ProfilePage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
@@ -133,7 +133,7 @@ const ProfilePage = () => {
             </div>
           </div>
           <div className="col-span-2">
-            <FavoriteList
+            <CommonVideoList
               films={favoriteMovies}
               series={favoriteTVSeries}
               label="Daftar Saya"

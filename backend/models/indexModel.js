@@ -10,7 +10,7 @@ User.hasMany(FavoriteTVSeries, { foreignKey: "userId" });
 FavoriteTVSeries.belongsTo(User, { foreignKey: "userId" });
 
 (async () => {
-    await db.sync({ alter: true });
+  await db.sync({ alter: true });
 })();
 
 export { User, FavoriteMovie, FavoriteTVSeries };

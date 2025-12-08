@@ -3,6 +3,8 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Logo from "../../atoms/Logo";
 import helpLinks from "./HelpLink";
 import useGetData from "../../../hooks/useGetData";
+import useUser from "../../../hooks/useUsername";
+import { Link } from "react-router";
 
 const Footer = () => {
   const [isOpenGenre, setIsOpenGenre] = useState<string>("hidden");
@@ -10,6 +12,8 @@ const Footer = () => {
 
   const { getMovieGenres, getTVSeriesGenres, movieGenres, tvGenres } =
     useGetData();
+
+  const { user } = useUser();
 
   const handleDropdownGenre = () => {
     if (isOpenGenre === "hidden") {
@@ -35,11 +39,11 @@ const Footer = () => {
   const genreLinks = [
     ...(movieGenres || []).map((genre) => ({
       lable: genre.name,
-      to: `/movies/genre/${genre.id}`,
+      to: `/${user?.username}/movies/genre/${genre.id}`,
     })),
     ...(tvGenres || []).map((genre) => ({
       lable: genre.name,
-      to: `/tv/genre/${genre.id}`,
+      to: `/${user?.username}/tv/genre/${genre.id}`,
     })),
   ];
 
@@ -71,7 +75,9 @@ const Footer = () => {
                 key={index}
                 className="transition-colors duration-300 ease-in-out hover:text-text-light-primary"
               >
-                <a href={link.to} className="whitespace-nowrap">{link.lable}</a>
+                <Link to={link.to} className="whitespace-nowrap">
+                  {link.lable}
+                </Link>
               </li>
             ))}
           </ul>

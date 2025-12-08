@@ -28,7 +28,7 @@ type Props = {
   handleOpenPopUpTVDetail?: (id: number) => void;
 };
 
-const VideoListVertical = ({
+const VideoListHorizontal = ({
   label,
   films,
   series,
@@ -66,14 +66,14 @@ const VideoListVertical = ({
   return (
     <div className="px-5 md:px-0">
       <Swiper
-        slidesPerView={3}
+        slidesPerView={1}
         spaceBetween={20}
         centeredSlides={true}
-        loop={true}
+        loop={false}
         autoplay={{ delay: 10000, disableOnInteraction: false }}
         className="flex! flex-col-reverse! gap-5! pt-5! pb-10!"
         breakpoints={{
-          768: { slidesPerView: 8 },
+          768: { slidesPerView: 4 },
         }}
         modules={[Autoplay]}
       >
@@ -97,7 +97,7 @@ const VideoListVertical = ({
                   removeLoading={removeLoading}
                   getMovieDetails={getMovieDetails}
                   handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
-                  aspectRatio="aspect-2/3"
+                  aspectRatio="aspect-3/2"
                   videoCertification={movieCertification}
                 />
               </SwiperSlide>
@@ -117,7 +117,7 @@ const VideoListVertical = ({
                   removeLoading={removeLoading}
                   getSeriesDetails={getSeriesDetails}
                   handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
-                  aspectRatio="aspect-2/3"
+                  aspectRatio="aspect-3/2"
                 />
               </SwiperSlide>
             ))}
@@ -127,4 +127,4 @@ const VideoListVertical = ({
   );
 };
 
-export default VideoListVertical;
+export default VideoListHorizontal;

@@ -1,5 +1,9 @@
 import cloudinary from "../config/cloudinary.js";
-import { User, FavoriteMovie, FavoriteTVSeries } from "../models/indexModel.js";
+import {
+  User,
+  FavoriteMovie,
+  FavoriteTVSeries,
+} from "../models/indexModel.js";
 import dotenv from "dotenv";
 
 dotenv.config();

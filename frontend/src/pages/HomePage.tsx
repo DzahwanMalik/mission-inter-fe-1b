@@ -8,6 +8,7 @@ import useRemoveData from "../hooks/useRemoveData";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 import HeroBanner from "../components/organisms/HeroBanner";
+import VideoListHorizontal from "../components/organisms/VideoListHorizontal";
 
 const HomePage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
@@ -145,6 +146,17 @@ const HomePage = () => {
       </header>
       <main className="bg-page-header-bg flex flex-col justify-center">
         <section className="w-full max-w-[1444px] m-auto">
+          <VideoListHorizontal 
+            label="Melanjutkan Tonton Film"
+            films={favoriteMovies}
+            handleAddFavoriteMovie={handleAddFavoriteMovie}
+            handleRemoveFavoriteMovie={handleRemoveFavoriteMovie}
+            addLoading={addLoading}
+            removeLoading={removeLoading}
+            user={user}
+            favoriteMovies={favoriteMovies}
+            handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+          />
           <VideoListVertical
             label="Top Rating Film dan Series Hari Ini"
             films={topRatedMovies}
