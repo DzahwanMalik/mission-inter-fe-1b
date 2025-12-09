@@ -40,6 +40,10 @@ const MyListPage = () => {
     getTVSeriesTrailerKey,
     tvTrailerKey,
     setTvTrailerKey,
+    getTopRatedMovies,
+    topRatedMovies,
+    getTVOnTheAir,
+    tvOnTheAir,
   } = useGetData();
 
   const {
@@ -112,6 +116,8 @@ const MyListPage = () => {
   useEffect(() => {
     getFavoriteTVSeries(user!.id);
     getFavoriteMovies(user!.id);
+    getTopRatedMovies();
+    getTVOnTheAir();
   }, []);
 
   return (
@@ -134,6 +140,8 @@ const MyListPage = () => {
             removeLoading={removeLoading}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            topRatedMovies={topRatedMovies}
+            newEpisode={tvOnTheAir}
           />
         </section>
       </main>

@@ -26,6 +26,8 @@ type Props = {
   favoriteTVSeries?: Array<DiscoverTVSeries>;
   handleOpenPopUpMovieDetail?: (id: number) => void;
   handleOpenPopUpTVDetail?: (id: number) => void;
+  topRatedMovies?: Array<DiscoverMovies>;
+  newEpisode?: Array<DiscoverTVSeries>;
 };
 
 const VideoListVertical = ({
@@ -43,6 +45,8 @@ const VideoListVertical = ({
   favoriteTVSeries,
   handleOpenPopUpMovieDetail,
   handleOpenPopUpTVDetail,
+  topRatedMovies,
+  newEpisode,
 }: Props) => {
   const {
     getMovieDetails,
@@ -99,6 +103,7 @@ const VideoListVertical = ({
                   handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
                   aspectRatio="aspect-2/3"
                   videoCertification={movieCertification}
+                  topRatedMovies={topRatedMovies}
                 />
               </SwiperSlide>
             ))}
@@ -118,6 +123,7 @@ const VideoListVertical = ({
                   getSeriesDetails={getSeriesDetails}
                   handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
                   aspectRatio="aspect-2/3"
+                  newEpisode={newEpisode}
                 />
               </SwiperSlide>
             ))}

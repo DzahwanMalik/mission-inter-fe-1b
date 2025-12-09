@@ -44,6 +44,10 @@ const ProfilePage = () => {
     tvTrailerKey,
     tvContentRating,
     tvEpisodes,
+    getTopRatedMovies,
+    topRatedMovies,
+    getTVOnTheAir,
+    tvOnTheAir,
   } = useGetData();
 
   const {
@@ -86,6 +90,8 @@ const ProfilePage = () => {
   useEffect(() => {
     getFavoriteTVSeries(user!.id);
     getFavoriteMovies(user!.id);
+    getTopRatedMovies();
+    getTVOnTheAir();
   }, []);
 
   const handleOpenPopUpMovieDetail = (id: number) => {
@@ -145,6 +151,8 @@ const ProfilePage = () => {
               removeLoading={removeLoading}
               handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
               handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+              topRatedMovies={topRatedMovies}
+              newEpisode={tvOnTheAir}
             />
           </div>
         </div>

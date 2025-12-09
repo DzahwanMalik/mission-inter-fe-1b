@@ -27,6 +27,7 @@ const SeriesPage = () => {
     tvEpisodes,
     getTVSeriesTrailerKey,
     tvTrailerKey,
+    setTvTrailerKey,
     getFavoriteTVSeries,
     favoriteTVSeries,
     getTVAiringToday,
@@ -37,6 +38,8 @@ const SeriesPage = () => {
     tvPopular,
     getNewReleaseTVSeries,
     tvNewRelease,
+    getTVOnTheAir,
+    tvOnTheAir,
   } = useGetData();
 
   const { addFavoriteTVSeries, addError, addLoading, addSuccess } =
@@ -65,6 +68,7 @@ const SeriesPage = () => {
 
   const handleClosePopUpTVDetail = () => {
     setShowPopUpTVDetail(false);
+    setTvTrailerKey(null);
   };
 
   useEffect(() => {
@@ -73,6 +77,7 @@ const SeriesPage = () => {
     getTopRatedTVSeries();
     getTVPopular();
     getNewReleaseTVSeries();
+    getTVOnTheAir();
     getFavoriteTVSeries(user!.id);
   }, []);
 
@@ -104,6 +109,7 @@ const SeriesPage = () => {
             user={user}
             favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            newEpisode={tvOnTheAir}
           />
           <VideoListVertical
             label="Tayang Hari Ini"
@@ -115,6 +121,7 @@ const SeriesPage = () => {
             user={user}
             favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            newEpisode={tvOnTheAir}
           />
           <VideoListVertical
             label="Top Rating Series Hari ini"
@@ -126,6 +133,7 @@ const SeriesPage = () => {
             user={user}
             favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            newEpisode={tvOnTheAir}
           />
           <VideoListVertical
             label="Series Populer"
@@ -137,6 +145,7 @@ const SeriesPage = () => {
             user={user}
             favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            newEpisode={tvOnTheAir}
           />
           <VideoListVertical
             label="Rilis Baru"
@@ -148,6 +157,7 @@ const SeriesPage = () => {
             user={user}
             favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            newEpisode={tvOnTheAir}
           />
         </section>
       </main>

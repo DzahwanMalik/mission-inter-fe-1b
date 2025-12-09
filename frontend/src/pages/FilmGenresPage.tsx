@@ -32,6 +32,8 @@ const FilmGenresPage = () => {
     movieByGenre,
     getMovieGenres,
     movieGenres,
+    getTopRatedMovies,
+    topRatedMovies,
   } = useGetData();
 
   const { addFavoriteMovie, addLoading, addError, addSuccess } = useAddData();
@@ -72,6 +74,7 @@ const FilmGenresPage = () => {
     getFavoriteMovies(user!.id);
     getMovieByGenre(genreId!);
     getMovieGenres();
+    getTopRatedMovies();
   }, [genreId]);
 
   return (
@@ -93,6 +96,7 @@ const FilmGenresPage = () => {
             addLoading={addLoading}
             removeLoading={removeLoading}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies}
           />
         </section>
       </main>

@@ -5,6 +5,7 @@ import type DiscoverTVSeries from "../../../types/discoverTVSeries";
 import type TVSeriesDetail from "../../../types/TVSeriesDetail";
 import { StarIcon } from "@heroicons/react/20/solid";
 import truncateDescription from "../../../utils/truncateDesc";
+import NewEpisodeBadge from "../NewEpisodeBadge";
 
 type Props = {
   user: User | null;
@@ -19,6 +20,7 @@ type Props = {
   handleOpenPopUpTVDetail?: (videoId: number) => void;
   aspectRatio: string;
   videoContentRatings: string | null;
+  newEpisode?: Array<DiscoverTVSeries>;
 };
 
 const SeriesCard = ({
@@ -34,10 +36,13 @@ const SeriesCard = ({
   handleOpenPopUpTVDetail,
   aspectRatio,
   videoContentRatings,
+  newEpisode,
 }: Props) => {
   const [hoveredId, setHoveredId] = useState<number | null>(null);
 
   const isMobile = window.innerWidth < 768;
+
+  const isNewEpisode = newEpisode?.some((episode) => episode.id === video.id);
 
   return (
     <div
@@ -67,6 +72,7 @@ const SeriesCard = ({
           alt=""
           loading="lazy"
         />
+        {isNewEpisode && <NewEpisodeBadge />}
         {aspectRatio === "aspect-3/2" && (
           <div className="absolute top-0 left-0 w-full h-full z-10 bg-linear-to-t from-black to-transparent text-text-light-primary p-5 flex items-end">
             <div className="flex items-center justify-between w-full">

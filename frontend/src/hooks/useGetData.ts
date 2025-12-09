@@ -60,6 +60,7 @@ const useGetData = () => {
   const [tvPopular, setTvPopular] = useState<Array<DiscoverTVSeries>>([]);
   const [tvNewRelease, setTvNewRelease] = useState<Array<DiscoverTVSeries>>([]);
   const [tvByGenre, setTvByGenre] = useState<Array<DiscoverTVSeries>>([]);
+  const [tvOnTheAir, setTvOnTheAir] = useState<Array<DiscoverTVSeries>>([]);
 
   // Utils
   const [getLoading, setGetLoading] = useState<boolean>(false);
@@ -478,6 +479,23 @@ const useGetData = () => {
     }
   };
 
+  const getTVOnTheAir = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/tv/on_the_air`, {
+        params: {
+          language: "en-US",
+          page: 1,
+        },
+      });
+      setTvOnTheAir(response?.data?.results);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
   return {
     allTrending,
     getAllTrending,
@@ -537,6 +555,8 @@ const useGetData = () => {
     getMovieByGenre,
     tvByGenre,
     getTVByGenre,
+    tvOnTheAir,
+    getTVOnTheAir,
   };
 };
 

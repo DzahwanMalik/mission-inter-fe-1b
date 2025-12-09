@@ -52,6 +52,8 @@ const HomePage = () => {
     getTVSeriesTrailerKey,
     tvTrailerKey,
     setTvTrailerKey,
+    getTVOnTheAir,
+    tvOnTheAir,
   } = useGetData();
 
   const {
@@ -122,6 +124,7 @@ const HomePage = () => {
     getTopRatedTVSeries();
     getPopularMovies();
     getNewReleaseMovies();
+    getTVOnTheAir();
     getFavoriteMovies(user!.id);
     getFavoriteTVSeries(user!.id);
   }, []);
@@ -146,7 +149,7 @@ const HomePage = () => {
       </header>
       <main className="bg-page-header-bg flex flex-col justify-center">
         <section className="w-full max-w-[1444px] m-auto">
-          <VideoListHorizontal 
+          <VideoListHorizontal
             label="Melanjutkan Tonton Film"
             films={favoriteMovies}
             handleAddFavoriteMovie={handleAddFavoriteMovie}
@@ -156,6 +159,7 @@ const HomePage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
           <VideoListVertical
             label="Top Rating Film dan Series Hari Ini"
@@ -172,6 +176,8 @@ const HomePage = () => {
             favoriteTVSeries={favoriteTVSeries}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
+            newEpisode={tvOnTheAir}
           />
           <VideoListVertical
             label="Film Populer"
@@ -183,6 +189,7 @@ const HomePage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
           <VideoListVertical
             label="Film Rilis Baru"
@@ -194,6 +201,7 @@ const HomePage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
         </section>
       </main>

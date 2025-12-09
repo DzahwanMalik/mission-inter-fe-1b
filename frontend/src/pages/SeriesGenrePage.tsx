@@ -31,6 +31,8 @@ const SeriesGenrePage = () => {
     tvByGenre,
     getTVSeriesGenres,
     tvGenres,
+    getTVOnTheAir,
+    tvOnTheAir,
   } = useGetData();
 
   const { addFavoriteTVSeries, addLoading, addError, addSuccess } =
@@ -72,6 +74,7 @@ const SeriesGenrePage = () => {
     getFavoriteTVSeries(user!.id);
     getTVByGenre(genreId!);
     getTVSeriesGenres();
+    getTVOnTheAir();
   }, [genreId]);
 
   return (
@@ -93,6 +96,7 @@ const SeriesGenrePage = () => {
             addLoading={addLoading}
             removeLoading={removeLoading}
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+            newEpisode={tvOnTheAir}
           />
         </section>
       </main>

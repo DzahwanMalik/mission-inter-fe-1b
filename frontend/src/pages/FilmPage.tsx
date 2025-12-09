@@ -26,6 +26,7 @@ const FilmsPage = () => {
     similiarMovies,
     getMovieTrailerKey,
     movieTrailerKey,
+    setMovieTrailerKey,
     getFavoriteMovies,
     favoriteMovies,
     getMovieTrending,
@@ -65,6 +66,7 @@ const FilmsPage = () => {
 
   const handleClosePopUpMovieDetail = () => {
     setShowPopUpMovieDetail(false);
+    setMovieTrailerKey(null);
   };
 
   useEffect(() => {
@@ -104,6 +106,7 @@ const FilmsPage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
           <VideoListVertical
             label="Tayang Hari Ini"
@@ -115,6 +118,7 @@ const FilmsPage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
           <VideoListVertical
             label="Top Rating Series Hari ini"
@@ -126,6 +130,7 @@ const FilmsPage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
           <VideoListVertical
             label="Film Populer"
@@ -137,6 +142,7 @@ const FilmsPage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
           <VideoListVertical
             label="Rilis Baru"
@@ -148,6 +154,7 @@ const FilmsPage = () => {
             user={user}
             favoriteMovies={favoriteMovies}
             handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
+            topRatedMovies={topRatedMovies.slice(0, 10)}
           />
         </section>
       </main>

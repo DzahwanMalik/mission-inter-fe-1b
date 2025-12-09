@@ -20,6 +20,8 @@ type Props = {
   label: string;
   addLoading: boolean;
   removeLoading: boolean;
+  topRatedMovies?: Array<DiscoverMovies>;
+  newEpisode?: Array<DiscoverTVSeries>;
 };
 
 const CommonVideoList = ({
@@ -36,6 +38,8 @@ const CommonVideoList = ({
   favoriteTVSeries,
   addLoading,
   removeLoading,
+  topRatedMovies,
+  newEpisode,
 }: Props) => {
   const {
     getMovieDetails,
@@ -98,6 +102,7 @@ const CommonVideoList = ({
               handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
               aspectRatio="aspect-2/3"
               videoCertification={movieCertification}
+              topRatedMovies={topRatedMovies}
             />
           </li>
         ))}
@@ -116,6 +121,7 @@ const CommonVideoList = ({
               handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
               aspectRatio="aspect-2/3"
               videoContentRatings={tvContentRating}
+              newEpisode={newEpisode}
             />
           </li>
         ))}
