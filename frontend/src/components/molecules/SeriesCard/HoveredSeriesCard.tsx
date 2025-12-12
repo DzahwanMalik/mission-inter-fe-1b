@@ -21,6 +21,7 @@ type Props = {
   removeLoading: boolean;
   hoveredId: number | null;
   handleOpenPopUpTVDetail?: (videoId: number) => void;
+  imdb_id?: string;
 };
 
 const HoveredSeriesCard = ({
@@ -35,7 +36,13 @@ const HoveredSeriesCard = ({
   removeLoading,
   hoveredId,
   handleOpenPopUpTVDetail,
+  imdb_id,
 }: Props) => {
+  const handlePlay = () => {
+    const baseURL = import.meta.env.VITE_IMDB_BASE_URL;
+    window.open(`${baseURL}/${imdb_id}`);
+  };
+
   return (
     <div
       className="
@@ -58,6 +65,7 @@ const HoveredSeriesCard = ({
               type="button"
               value={<PlayIcon className="size-4" />}
               variant="secondary"
+              handleClick={handlePlay}
             />
             <Button
               type="button"
@@ -100,11 +108,7 @@ const HoveredSeriesCard = ({
           </div>
         </div>
         <div className="flex gap-3 items-center">
-          <Chip
-            value={videoContentRatings}
-            variant="secondary"
-            size="small"
-          />
+          <Chip value={videoContentRatings} variant="secondary" size="small" />
           <p className="font-semibold text-sm">
             {hoveredId === video.id
               ? tvDetail?.number_of_episodes + " Episodes"

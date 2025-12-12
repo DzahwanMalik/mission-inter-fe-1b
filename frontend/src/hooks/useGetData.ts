@@ -9,6 +9,8 @@ import type TVSeriesDetail from "../types/TVSeriesDetail";
 import type VideoCredits from "../types/videoCredits";
 import type AllTrending from "../types/allTrending";
 import type Subscription from "../types/subscription";
+import type TVSeriesExternalIds from "../types/TVSeriesExternalIds";
+import type MovieExternalIds from "../types/movieExternalIds";
 
 const useGetData = () => {
   // Subscription
@@ -44,6 +46,8 @@ const useGetData = () => {
     Array<DiscoverMovies>
   >([]);
   const [movieByGenre, setMovieByGenre] = useState<Array<DiscoverMovies>>([]);
+  const [movieExternalIds, setMovieExternalIds] =
+    useState<MovieExternalIds | null>(null);
 
   // TV Series
   const [favoriteTVSeries, setFavoriteTVSeries] = useState<
@@ -66,6 +70,8 @@ const useGetData = () => {
   const [tvNewRelease, setTvNewRelease] = useState<Array<DiscoverTVSeries>>([]);
   const [tvByGenre, setTvByGenre] = useState<Array<DiscoverTVSeries>>([]);
   const [tvOnTheAir, setTvOnTheAir] = useState<Array<DiscoverTVSeries>>([]);
+  const [tvExternalIds, setTvExternalIds] =
+    useState<TVSeriesExternalIds | null>(null);
 
   // Utils
   const [getLoading, setGetLoading] = useState<boolean>(false);
@@ -501,6 +507,30 @@ const useGetData = () => {
     }
   };
 
+  const getMovieExternalIds = async (movieId: number) => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/movie/${movieId}/external_ids`);
+      setMovieExternalIds(response?.data);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getTVSeriesExternalIds = async (tvId: number) => {
+    setGetLoading(true);
+    try {
+      const response = await axiosTMDB.get(`/tv/${tvId}/external_ids`);
+      setTvExternalIds(response?.data);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
   const getSubscriptions = async () => {
     setGetLoading(true);
     try {
@@ -590,6 +620,10 @@ const useGetData = () => {
     getSubscriptions,
     subscription,
     getSubscription,
+    movieExternalIds,
+    getMovieExternalIds,
+    tvExternalIds,
+    getTVSeriesExternalIds,
   };
 };
 

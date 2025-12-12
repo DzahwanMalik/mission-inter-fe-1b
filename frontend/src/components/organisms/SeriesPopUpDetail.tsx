@@ -9,9 +9,10 @@ import Chip from "../atoms/Chip";
 import type TVSeriesDetail from "../../types/TVSeriesDetail";
 import type VideoCredits from "../../types/videoCredits";
 import truncateDescription from "../../utils/truncateDesc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type DiscoverTVSeries from "../../types/discoverTVSeries";
 import type User from "../../types/user";
+import useGetData from "../../hooks/useGetData";
 
 type Props = {
   isShow: boolean;
@@ -46,6 +47,8 @@ const SeriesPopUpDetail = ({
 }: Props) => {
   const [isMuted, setIsMuted] = useState<number>(1);
 
+  const { getTVSeriesExternalIds, tvExternalIds } = useGetData();
+
   const seriesSpec = [
     {
       name: "Cast",
@@ -66,6 +69,17 @@ const SeriesPopUpDetail = ({
   const trailerUrl = videoTrailerKey
     ? `${TrailerBaseUrl}${videoTrailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${videoTrailerKey}`
     : null;
+
+  const handlePlay = (imdb_id: string | undefined) => {
+    const baseURL = import.meta.env.VITE_IMDB_BASE_URL;
+    window.open(`${baseURL}/${imdb_id}`);
+  };
+
+  useEffect(() => {
+    if (videoDetail) {
+      getTVSeriesExternalIds(videoDetail.id);
+    }
+  }, [videoDetail]);
 
   return (
     <div
@@ -105,6 +119,7 @@ const SeriesPopUpDetail = ({
                     type="button"
                     variant="primary"
                     className="text-xs md:text-sm md:px-10!"
+                    handleClick={() => handlePlay(tvExternalIds?.imdb_id)}
                   />
                   <Button
                     value={

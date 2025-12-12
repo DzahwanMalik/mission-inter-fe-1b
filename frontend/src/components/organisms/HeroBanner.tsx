@@ -47,6 +47,10 @@ const HeroBanner = ({
     movieByGenre,
     getTVByGenre,
     tvByGenre,
+    getMovieExternalIds,
+    movieExternalIds,
+    getTVSeriesExternalIds,
+    tvExternalIds,
   } = useGetData();
 
   // Set Current Video
@@ -93,9 +97,11 @@ const HeroBanner = ({
       if (commmonCurrentVideo.media_type === "movie") {
         getMovieTrailerKey(commmonCurrentVideo.id);
         getMovieCertification(commmonCurrentVideo.id);
+        getMovieExternalIds(commmonCurrentVideo.id);
       } else if (commmonCurrentVideo.media_type === "tv") {
         getTVSeriesTrailerKey(commmonCurrentVideo.id);
         getTVSeriesContentRating(commmonCurrentVideo.id);
+        getTVSeriesExternalIds(commmonCurrentVideo.id);
       }
     }
   }, [commmonCurrentVideo]);
@@ -106,6 +112,7 @@ const HeroBanner = ({
     if (seriesCurrentVideo) {
       getTVSeriesTrailerKey(seriesCurrentVideo.id);
       getTVSeriesContentRating(seriesCurrentVideo.id);
+      getTVSeriesExternalIds(seriesCurrentVideo.id);
     }
   }, [seriesCurrentVideo]);
 
@@ -115,6 +122,7 @@ const HeroBanner = ({
     if (movieCurrentVideo) {
       getMovieTrailerKey(movieCurrentVideo.id);
       getMovieCertification(movieCurrentVideo.id);
+      getMovieExternalIds(movieCurrentVideo.id);
     }
   }, [movieCurrentVideo]);
 
@@ -158,6 +166,11 @@ const HeroBanner = ({
             isMuted={isMuted}
             handleMute={handleMute}
             dropdownGenres={false}
+            imdb_id={
+              commmonCurrentVideo?.media_type === "movie"
+                ? movieExternalIds?.imdb_id
+                : tvExternalIds?.imdb_id
+            }
           />
         </>
       )}
@@ -176,6 +189,7 @@ const HeroBanner = ({
             genreLinks={tvGenres}
             dropdownGenres={true}
             handleSetGenre={handleSetGenre}
+            imdb_id={tvExternalIds?.imdb_id}
           />
         </>
       )}
@@ -194,6 +208,7 @@ const HeroBanner = ({
             genreLinks={movieGenres}
             dropdownGenres={true}
             handleSetGenre={handleSetGenre}
+            imdb_id={movieExternalIds?.imdb_id}
           />
         </>
       )}

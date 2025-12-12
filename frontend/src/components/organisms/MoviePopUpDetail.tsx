@@ -10,8 +10,9 @@ import Chip from "../atoms/Chip";
 import type DiscoverMovies from "../../types/discoverMovies";
 import type VideoCredits from "../../types/videoCredits";
 import truncateDescription from "../../utils/truncateDesc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type User from "../../types/user";
+import useGetData from "../../hooks/useGetData";
 
 type Props = {
   isShow: boolean;
@@ -46,6 +47,8 @@ const MoviePopUpDetail = ({
 }: Props) => {
   const [isMuted, setIsMuted] = useState<number>(1);
 
+  const { getMovieExternalIds, movieExternalIds } = useGetData();
+
   const movieSpec = [
     {
       name: "Cast",
@@ -68,6 +71,17 @@ const MoviePopUpDetail = ({
   const trailerUrl = videoTrailerKey
     ? `${TrailerBaseUrl}${videoTrailerKey}?autoplay=1&mute=${isMuted}&loop=1&playlist=${videoTrailerKey}`
     : null;
+
+  const handlePlay = (imdb_id: string | undefined) => {
+    const baseURL = import.meta.env.VITE_IMDB_BASE_URL;
+    window.open(`${baseURL}/${imdb_id}`);
+  };
+
+  useEffect(() => {
+    if (videoDetail) {
+      getMovieExternalIds(videoDetail.id);
+    }
+  }, [videoDetail]);
 
   return (
     <div
@@ -110,6 +124,7 @@ const MoviePopUpDetail = ({
                     type="button"
                     variant="primary"
                     className="text-xs md:text-sm md:px-10!"
+                    handleClick={() => handlePlay(movieExternalIds?.imdb_id)}
                   />
                   <Button
                     value={

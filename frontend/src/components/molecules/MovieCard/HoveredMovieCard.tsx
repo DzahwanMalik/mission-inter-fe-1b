@@ -21,6 +21,7 @@ type Props = {
   hoveredId: number | null;
   handleOpenPopUpMovieDetail?: (id: number) => void;
   videoCertification: string | null;
+  imdb_id?: string;
 };
 
 const HoveredMovieCard = ({
@@ -35,7 +36,13 @@ const HoveredMovieCard = ({
   hoveredId,
   handleOpenPopUpMovieDetail,
   videoCertification,
+  imdb_id,
 }: Props) => {
+  const handlePlay = () => {
+    const baseURL = import.meta.env.VITE_IMDB_BASE_URL;
+    window.open(`${baseURL}/${imdb_id}`);
+  };
+
   return (
     <div
       className="
@@ -58,6 +65,7 @@ const HoveredMovieCard = ({
               type="button"
               value={<PlayIcon className="size-4" />}
               variant="secondary"
+              handleClick={handlePlay}
             />
             <Button
               type="button"
@@ -100,11 +108,7 @@ const HoveredMovieCard = ({
           </div>
         </div>
         <div className="flex gap-3 items-center">
-          <Chip
-            value={videoCertification}
-            variant="secondary"
-            size="small"
-          />
+          <Chip value={videoCertification} variant="secondary" size="small" />
           <p className="font-semibold text-sm">
             {hoveredId === video.id
               ? Math.floor((movieDetail?.runtime ?? 0) / 60) +

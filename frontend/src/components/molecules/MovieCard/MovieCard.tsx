@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type DiscoverMovies from "../../../types/discoverMovies";
 import type User from "../../../types/user";
 import type MovieDetail from "../../../types/movieDetail";
@@ -6,6 +6,7 @@ import HoveredMovieCard from "./HoveredMovieCard";
 import truncateDescription from "../../../utils/truncateDesc";
 import { StarIcon } from "@heroicons/react/20/solid";
 import TopRatedBadge from "../TopRatedBadge";
+import useGetData from "../../../hooks/useGetData";
 
 type Props = {
   user: User | null;
@@ -44,6 +45,14 @@ const MovieCard = ({
 
   const isTopRated = topRatedMovies?.some((movie) => movie.id === video.id);
 
+  const { getMovieExternalIds, movieExternalIds } = useGetData();
+
+  useEffect(() => {
+    if (video.id) {
+      getMovieExternalIds(video.id);
+    }
+  }, [video.id]);
+
   return (
     <div
       className="relative group w-full cursor-pointer"
@@ -72,9 +81,7 @@ const MovieCard = ({
           alt=""
           loading="lazy"
         />
-        {isTopRated && (
-          <TopRatedBadge />
-        )} 
+        {isTopRated && <TopRatedBadge />}
         {aspectRatio === "aspect-3/2" && (
           <div className="absolute top-0 left-0 w-full h-full z-10 bg-linear-to-t from-black to-transparent text-text-light-primary p-5 flex items-end">
             <div className="flex items-center justify-between w-full">
@@ -102,6 +109,7 @@ const MovieCard = ({
         hoveredId={hoveredId}
         handleOpenPopUpMovieDetail={handleOpenPopUpMovieDetail}
         videoCertification={videoCertification}
+        imdb_id={movieExternalIds?.imdb_id}
       />
     </div>
   );

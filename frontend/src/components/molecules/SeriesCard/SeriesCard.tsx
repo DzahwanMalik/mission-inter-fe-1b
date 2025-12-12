@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type User from "../../../types/user";
 import HoveredSeriesCard from "./HoveredSeriesCard";
 import type DiscoverTVSeries from "../../../types/discoverTVSeries";
@@ -6,6 +6,7 @@ import type TVSeriesDetail from "../../../types/TVSeriesDetail";
 import { StarIcon } from "@heroicons/react/20/solid";
 import truncateDescription from "../../../utils/truncateDesc";
 import NewEpisodeBadge from "../NewEpisodeBadge";
+import useGetData from "../../../hooks/useGetData";
 
 type Props = {
   user: User | null;
@@ -43,6 +44,14 @@ const SeriesCard = ({
   const isMobile = window.innerWidth < 768;
 
   const isNewEpisode = newEpisode?.some((episode) => episode.id === video.id);
+
+  const { getTVSeriesExternalIds, tvExternalIds } = useGetData();
+
+  useEffect(() => {
+    if (video.id) {
+      getTVSeriesExternalIds(video.id);
+    }
+  }, [video.id]);
 
   return (
     <div
@@ -100,6 +109,7 @@ const SeriesCard = ({
         removeLoading={removeLoading}
         hoveredId={hoveredId}
         handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
+        imdb_id={tvExternalIds?.imdb_id}
       />
     </div>
   );

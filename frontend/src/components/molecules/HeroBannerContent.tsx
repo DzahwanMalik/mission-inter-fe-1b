@@ -20,6 +20,7 @@ type Props = {
   genreLinks?: Array<Genres>;
   dropdownGenres: boolean;
   handleSetGenre?: (id: string) => void;
+  imdb_id?: string;
 };
 
 const HeroBannerContent = ({
@@ -32,9 +33,15 @@ const HeroBannerContent = ({
   genreLinks,
   dropdownGenres,
   handleSetGenre,
+  imdb_id,
 }: Props) => {
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handlePlay = () => {
+    const baseURL = import.meta.env.VITE_IMDB_BASE_URL;
+    window.open(`${baseURL}/${imdb_id}`);
+  };
 
   const dropdownToggle = () => {
     const el = dropdownRef.current;
@@ -115,7 +122,12 @@ const HeroBannerContent = ({
         </div>
         <div className="flex justify-between items-center text-xs md:text-sm">
           <div className="flex gap-3">
-            <Button value="Mulai" variant="primary" type="button" />
+            <Button
+              value="Mulai"
+              variant="primary"
+              type="button"
+              handleClick={handlePlay}
+            />
             <Button
               value={
                 <div className="flex gap-1 justify-center items-center">
