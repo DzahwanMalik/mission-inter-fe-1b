@@ -153,6 +153,8 @@ const ProfilePage = () => {
               handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
               topRatedMovies={topRatedMovies}
               newEpisode={tvOnTheAir}
+              favoriteMovies={favoriteMovies}
+              favoriteTVSeries={favoriteTVSeries}
             />
           </div>
         </div>

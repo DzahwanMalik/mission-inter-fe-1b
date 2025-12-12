@@ -142,6 +142,8 @@ const MyListPage = () => {
             handleOpenPopUpTVDetail={handleOpenPopUpTVDetail}
             topRatedMovies={topRatedMovies}
             newEpisode={tvOnTheAir}
+            favoriteMovies={favoriteMovies}
+            favoriteTVSeries={favoriteTVSeries}
           />
         </section>
       </main>
