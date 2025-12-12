@@ -8,8 +8,13 @@ import axiosInstance from "../lib/axios";
 import type TVSeriesDetail from "../types/TVSeriesDetail";
 import type VideoCredits from "../types/videoCredits";
 import type AllTrending from "../types/allTrending";
+import type Subscription from "../types/subscription";
 
 const useGetData = () => {
+  // Subscription
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [subscriptions, setSubscriptions] = useState<Array<Subscription>>([]);
+
   // Common
   const [allTrending, setAllTrending] = useState<Array<AllTrending>>([]);
 
@@ -496,6 +501,30 @@ const useGetData = () => {
     }
   };
 
+  const getSubscriptions = async () => {
+    setGetLoading(true);
+    try {
+      const response = await axiosInstance.get("/subscription");
+      setSubscriptions(response?.data);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
+  const getSubscription = async (id: string) => {
+    setGetLoading(true);
+    try {
+      const response = await axiosInstance.get(`/subscription/${id}`);
+      setSubscription(response?.data);
+    } catch (error: any) {
+      handleError(error.message);
+    } finally {
+      setGetLoading(false);
+    }
+  };
+
   return {
     allTrending,
     getAllTrending,
@@ -557,6 +586,10 @@ const useGetData = () => {
     getTVByGenre,
     tvOnTheAir,
     getTVOnTheAir,
+    subscriptions,
+    getSubscriptions,
+    subscription,
+    getSubscription,
   };
 };
 

@@ -66,7 +66,7 @@ const Navbar = () => {
     },
     {
       action: () => {
-        window.location.href = "/auth/login";
+        window.location.href = `/${user?.username}/subscription`;
       },
       label: "Ubah Premium",
       icon: <StarIcon className="size-4" />,

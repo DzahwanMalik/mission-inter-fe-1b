@@ -1,4 +1,4 @@
-type Variant = "primary" | "secondary" | "tertiary" | "primaryOutline" | "secondaryOutline" | "transparent";
+type Variant = "primary" | "secondary" | "tertiary" | "primaryOutline" | "secondaryOutline" | "transparent" | "primaryDark";
 
 type Props = {
   value: any;
@@ -25,6 +25,7 @@ const Button = ({
     primaryOutline: "border border-primary text-primary hover:bg-primary hover:text-text-light-primary",
     secondaryOutline: "border border-text-light-secondary text-text-light-secondary hover:bg-extra-bg hover:text-text-light-primary",
     transparent: "bg-transparent text-text-light-primary hover:bg-paper-bg",
+    primaryDark: "bg-white text-primary-300 hover:bg-primary-300 hover:text-text-light-primary",
   };
   
   return (

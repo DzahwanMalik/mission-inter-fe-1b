@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import db from "./config/database.js";
 import userRoute from "./routes/userRoute.js";
+import subscriptionRoute from "./routes/subscriptionRoute.js";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(userRoute);
+app.use(subscriptionRoute);
 
 try {
   db.authenticate();

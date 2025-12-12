@@ -15,6 +15,8 @@ import FilmsPage from "./pages/FilmPage";
 import MyListPage from "./pages/MyListPage";
 import FilmGenresPage from "./pages/FilmGenresPage";
 import SeriesGenrePage from "./pages/SeriesGenrePage";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import PaymentPage from "./pages/PaymentPage";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -38,6 +40,8 @@ createRoot(document.getElementById("root")!).render(
             <Route path="profile" element={<ProfilePage />} />
             <Route path="movies/genre/:id" element={<FilmGenresPage />} />
             <Route path="tv/genre/:id" element={<SeriesGenrePage />} />
+            <Route path="subscription" element={<SubscriptionPage />} />
+            <Route path="subscription/:id" element={<PaymentPage />} />
           </Route>
 
           <Route path="*" element={<h1>404 Page Not Found</h1>} />
