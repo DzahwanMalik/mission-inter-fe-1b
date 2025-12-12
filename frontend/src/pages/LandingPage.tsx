@@ -3,7 +3,7 @@ import Logo from "../components/atoms/Logo";
 
 const LandingPage = () => {
   return (
-    <div className="relative z-10 h-screen flex justify-center items-center bg-[url('./landing-page-bg.jpg')] bg-cover bg-center text-text-light-primary font-lato text-center p-8 after:bg-black/60 after:absolute after:inset-0 after:-z-10">
+    <div className="relative z-10 h-screen flex justify-center items-center bg-[url('/landing-page-bg.jpg')] bg-cover bg-center text-text-light-primary font-lato text-center p-8 after:bg-black/60 after:absolute after:inset-0 after:-z-10">
       <div className="max-w-xl">
         <Logo />
         <h1 className="text-4xl font-bold my-5 md:text-6xl">

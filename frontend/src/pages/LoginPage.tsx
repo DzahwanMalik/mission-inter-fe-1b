@@ -4,7 +4,7 @@ import LoginForm from "../components/organisms/LoginForm";
 
 const LoginPage = () => {
   return (
-    <div className="relative z-10 h-screen flex justify-center items-center bg-[url('../login-bg.jpg')] bg-cover bg-center text-text-light-primary font-lato text-center p-8 after:bg-black/60 after:absolute after:inset-0 after:-z-10">
+    <div className="relative z-10 h-screen flex justify-center items-center bg-[url('/login-bg.jpg')] bg-cover bg-center text-text-light-primary font-lato text-center p-8 after:bg-black/60 after:absolute after:inset-0 after:-z-10">
       <AuthContainer>
         <Logo size="large" className="md:block hidden" />
         <Logo size="medium" className="md:hidden block" />
