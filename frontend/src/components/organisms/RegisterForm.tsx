@@ -27,7 +27,7 @@ const RegisterFormSchema = z
 type RegisterFormSchemaType = z.infer<typeof RegisterFormSchema>;
 
 const RegisterForm = () => {
-  const { register, handleSubmit, formState, reset } = useForm({
+  const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(
       RegisterFormSchema
     ) as Resolver<RegisterFormSchemaType>,
