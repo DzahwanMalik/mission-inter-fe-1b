@@ -7,17 +7,25 @@ import useRemoveData from "../hooks/useRemoveData";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 import CommonVideoList from "../components/organisms/CommonVideoList";
+import useFavoriteMoviesStore from "../stores/favoriteMoviesStore";
+import useFavoriteTVSeriesStore from "../stores/favoriteTVSeries";
 
 const MyListPage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
     useState<boolean>(false);
   const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
 
+  const favoriteMovies = useFavoriteMoviesStore(
+    (state) => state.favoriteMovies
+  );
+
+  const favoriteTVSeries = useFavoriteTVSeriesStore(
+    (state) => state.favoriteTVSeries
+  );
+
   const {
     getFavoriteMovies,
     getFavoriteTVSeries,
-    favoriteMovies,
-    favoriteTVSeries,
     getMovieDetails,
     movieDetail,
     getSeriesDetails,

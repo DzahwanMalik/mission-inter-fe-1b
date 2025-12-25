@@ -9,6 +9,8 @@ import Alert from "../components/atoms/Alert";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 import CommonVideoList from "../components/organisms/CommonVideoList";
+import useFavoriteMoviesStore from "../stores/favoriteMoviesStore";
+import useFavoriteTVSeriesStore from "../stores/favoriteTVSeries";
 
 const ProfilePage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
@@ -17,11 +19,17 @@ const ProfilePage = () => {
 
   const { user } = useUser();
 
+  const favoriteMovies = useFavoriteMoviesStore(
+    (state) => state.favoriteMovies
+  );
+
+  const favoriteTVSeries = useFavoriteTVSeriesStore(
+    (state) => state.favoriteTVSeries
+  );
+
   const {
     getFavoriteTVSeries,
-    favoriteTVSeries,
     getFavoriteMovies,
-    favoriteMovies,
     getMovieCredits,
     getMovieDetails,
     getMovieCertification,

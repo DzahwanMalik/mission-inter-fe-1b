@@ -7,15 +7,19 @@ import useRemoveData from "../hooks/useRemoveData";
 import { useParams } from "react-router";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 import CommonVideoList from "../components/organisms/CommonVideoList";
+import useFavoriteTVSeriesStore from "../stores/favoriteTVSeries";
 
 const SeriesGenrePage = () => {
   const genreId = useParams().id;
 
   const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
 
+  const favoriteTVSeries = useFavoriteTVSeriesStore(
+    (state) => state.favoriteTVSeries
+  );
+
   const {
     getFavoriteTVSeries,
-    favoriteTVSeries,
     getSeriesDetails,
     tvDetail,
     getTVSeriesContentRating,

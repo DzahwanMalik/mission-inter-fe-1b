@@ -7,6 +7,7 @@ import useRemoveData from "../hooks/useRemoveData";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import { useParams } from "react-router";
 import CommonVideoList from "../components/organisms/CommonVideoList";
+import useFavoriteMoviesStore from "../stores/favoriteMoviesStore";
 
 const FilmGenresPage = () => {
   const genreId = useParams().id;
@@ -14,9 +15,12 @@ const FilmGenresPage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
     useState<boolean>(false);
 
+  const favoriteMovies = useFavoriteMoviesStore(
+    (state) => state.favoriteMovies
+  );
+
   const {
     getFavoriteMovies,
-    favoriteMovies,
     getMovieDetails,
     movieDetail,
     getMovieCertification,

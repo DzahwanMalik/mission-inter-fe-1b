@@ -8,12 +8,17 @@ import Alert from "../components/atoms/Alert";
 import VideoListVertical from "../components/organisms/VideoListVertical";
 import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import VideoListHorizontal from "../components/organisms/VideoListHorizontal";
+import useFavoriteMoviesStore from "../stores/favoriteMoviesStore";
 
 const FilmsPage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
     useState<boolean>(false);
 
   const { user } = useUser();
+
+  const favoriteMovies = useFavoriteMoviesStore(
+    (state) => state.favoriteMovies
+  );
 
   const {
     getMovieDetails,
@@ -28,7 +33,6 @@ const FilmsPage = () => {
     movieTrailerKey,
     setMovieTrailerKey,
     getFavoriteMovies,
-    favoriteMovies,
     getMovieTrending,
     movieTrending,
     getMovieAiringToday,

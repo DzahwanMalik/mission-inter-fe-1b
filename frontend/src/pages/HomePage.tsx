@@ -9,11 +9,21 @@ import MoviePopUpDetail from "../components/organisms/MoviePopUpDetail";
 import SeriesPopUpDetail from "../components/organisms/SeriesPopUpDetail";
 import HeroBanner from "../components/organisms/HeroBanner";
 import VideoListHorizontal from "../components/organisms/VideoListHorizontal";
+import useFavoriteMoviesStore from "../stores/favoriteMoviesStore";
+import useFavoriteTVSeriesStore from "../stores/favoriteTVSeries";
 
 const HomePage = () => {
   const [showPopUpMovieDetail, setShowPopUpMovieDetail] =
     useState<boolean>(false);
   const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
+
+  const favoriteMovies = useFavoriteMoviesStore(
+    (state) => state.favoriteMovies
+  );
+
+  const favoriteTVSeries = useFavoriteTVSeriesStore(
+    (state) => state.favoriteTVSeries
+  );
 
   const {
     allTrending,
@@ -28,8 +38,6 @@ const HomePage = () => {
     getNewReleaseMovies,
     getFavoriteMovies,
     getFavoriteTVSeries,
-    favoriteMovies,
-    favoriteTVSeries,
     getMovieDetails,
     movieDetail,
     getSeriesDetails,

@@ -8,11 +8,16 @@ import useRemoveData from "../hooks/useRemoveData";
 import Alert from "../components/atoms/Alert";
 import VideoListVertical from "../components/organisms/VideoListVertical";
 import VideoListHorizontal from "../components/organisms/VideoListHorizontal";
+import useFavoriteTVSeriesStore from "../stores/favoriteTVSeries";
 
 const SeriesPage = () => {
   const [showPopUpTVDetail, setShowPopUpTVDetail] = useState<boolean>(false);
 
   const { user } = useUser();
+
+  const favoriteTVSeries = useFavoriteTVSeriesStore(
+    (state) => state.favoriteTVSeries
+  );
 
   const {
     getTVTrending,
@@ -29,7 +34,6 @@ const SeriesPage = () => {
     tvTrailerKey,
     setTvTrailerKey,
     getFavoriteTVSeries,
-    favoriteTVSeries,
     getTVAiringToday,
     tvAiringToday,
     getTopRatedTVSeries,

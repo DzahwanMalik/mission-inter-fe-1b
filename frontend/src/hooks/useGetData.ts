@@ -11,6 +11,8 @@ import type AllTrending from "../types/allTrending";
 import type Subscription from "../types/subscription";
 import type TVSeriesExternalIds from "../types/TVSeriesExternalIds";
 import type MovieExternalIds from "../types/movieExternalIds";
+import useFavoriteMoviesStore from "../stores/favoriteMoviesStore";
+import useFavoriteTVSeriesStore from "../stores/favoriteTVSeries";
 
 const useGetData = () => {
   // Subscription
@@ -21,8 +23,8 @@ const useGetData = () => {
   const [allTrending, setAllTrending] = useState<Array<AllTrending>>([]);
 
   // Movies
-  const [favoriteMovies, setFavoriteMovies] = useState<Array<DiscoverMovies>>(
-    []
+  const setFavoriteMovies = useFavoriteMoviesStore(
+    (state) => state.setFavoriteMovies
   );
   const [topRatedMovies, setTopRatedMovies] = useState<Array<DiscoverMovies>>(
     []
@@ -50,9 +52,9 @@ const useGetData = () => {
     useState<MovieExternalIds | null>(null);
 
   // TV Series
-  const [favoriteTVSeries, setFavoriteTVSeries] = useState<
-    Array<DiscoverTVSeries>
-  >([]);
+  const setFavoriteTVSeries = useFavoriteTVSeriesStore(
+    (state) => state.setFavoriteTVSeries
+  );
   const [topRatedTVSeries, setTopRatedTVSeries] = useState<
     Array<DiscoverTVSeries>
   >([]);
@@ -576,9 +578,7 @@ const useGetData = () => {
     getMovieGenres,
     tvGenres,
     getTVSeriesGenres,
-    favoriteMovies,
     getFavoriteMovies,
-    favoriteTVSeries,
     getFavoriteTVSeries,
     movieCertification,
     getMovieCertification,
